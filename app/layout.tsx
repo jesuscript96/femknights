@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SiteHeader from "./components/SiteHeader";
+import SiteFooter from "./components/SiteFooter";
+import DianaMenu from "./components/DianaMenu";
 
 export const metadata: Metadata = {
-  title: "thonik — about",
+  title: "The Dressing Room of a Female Knight — Crowdfunding",
   description:
-    "Strategy, design, impact. We are visual strategists at heart — based in Amsterdam, working worldwide.",
+    "This year, I become a knight. Help build the first solo exhibition of Niki's life at KOIK Contemporary, Mexico City. Donate and get a reward.",
 };
 
 export default function RootLayout({
@@ -14,7 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+        <DianaMenu />
+      </body>
     </html>
   );
 }

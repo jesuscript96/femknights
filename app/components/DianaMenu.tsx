@@ -1,35 +1,30 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { NAV } from "../content";
 
-/** Menú items de dentro (centro) hacia fuera, tal cual el vídeo. */
-const ITEMS = [
-  { label: "home", href: "#top" },
-  { label: "contact", href: "#contact" },
-  { label: "about", href: "#studio" },
-  { label: "stories", href: "#services" },
-  { label: "work", href: "#work" },
-];
+/** Menu rings, inner (center) → outer. The center is the DONATE button. */
+const ITEMS = NAV;
 
-// Geometría en viewBox 0..100, centro (50,50).
-const RW = 7; // grosor de cada banda / radio del disco central
-const GROW = RW * 0.7; // cuánto engorda SOLO la banda con hover
-const isBlack = (i: number) => i % 2 === 1; // contact + stories = anillos negros
+// Geometry in viewBox 0..100, center (50,50).
+const RW = 7; // band thickness / central disc radius
+const GROW = RW * 0.7; // how much ONLY the hovered band fattens
+const isBlack = (i: number) => i % 2 === 1; // alternate black/white rings
 const CLOSED_SCALE = 0.14;
 
 /**
- * Geometría de la banda i según el anillo con hover (efecto acordeón):
- * la banda con hover engorda hacia fuera y las de fuera se desplazan
- * para hacerle sitio, manteniendo su grosor. Nunca se solapan.
+ * Band geometry with an accordion effect: the hovered band grows outward
+ * and the outer bands shift to make room, keeping their thickness.
  */
 function bandGeom(i: number, hovered: number | null) {
   const h = hovered !== null && hovered >= 0 ? hovered : -1;
   let inner = (i + 1) * RW;
   let outer = (i + 2) * RW;
   if (h >= 0) {
-    if (i === h) outer += GROW; // la banda activa crece hacia fuera
+    if (i === h) outer += GROW;
     else if (i > h) {
-      inner += GROW; // las de fuera se desplazan (mismo grosor)
+      inner += GROW;
       outer += GROW;
     }
   }
@@ -39,13 +34,20 @@ function bandGeom(i: number, hovered: number | null) {
 export default function DianaMenu() {
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const close = useCallback(() => {
     setOpen(false);
     setHovered(null);
   }, []);
 
-  // Escape para cerrar + bloquear scroll del body mientras está abierto.
+  // Close on route change.
+  useEffect(() => {
+    close();
+  }, [pathname, close]);
+
+  // Escape closes + lock body scroll while open.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -63,11 +65,7 @@ export default function DianaMenu() {
   const go = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
     close();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      if (href === "#top") window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    router.push(href);
   };
 
   const onRingClick = (e: React.MouseEvent, i: number) => {
@@ -75,13 +73,15 @@ export default function DianaMenu() {
     else setOpen(true);
   };
 
-  const onCenterClick = () => {
-    if (open) close();
+  // Center = DONATE when open; opens the menu when closed.
+  const onCenterClick = (e: React.MouseEvent) => {
+    if (open) go(e, "/donate");
     else setOpen(true);
   };
 
-  // La diana solo cambia de escala entre cerrado y abierto. El hover NO
-  // escala el conjunto: solo engorda la banda activa (acordeón).
+  // Don't overlay the donate button on the donate flow itself.
+  if (pathname?.startsWith("/donate")) return null;
+
   const panelScale = open ? 1 : CLOSED_SCALE;
 
   return (
@@ -95,25 +95,27 @@ export default function DianaMenu() {
         }
       }}
     >
-      {/* Capa para cerrar al hacer click fuera */}
+      {/* Scrim: click outside to close */}
       <button
         className="diana-scrim"
-        aria-label="Cerrar menú"
+        aria-label="Close menu"
         tabIndex={open ? 0 : -1}
         onClick={close}
       />
 
-      {/* La diana: misma pieza en cerrado y abierto, solo cambia de escala */}
+      {/* Hint shown while collapsed */}
+      {!open && <span className="diana-hint" aria-hidden="true">donate</span>}
+
       <svg
         className="diana-panel"
         viewBox="0 0 100 100"
         role="button"
-        aria-label={open ? "Menú abierto" : "Abrir menú"}
+        aria-label={open ? "Menu open — center is donate" : "Open donate menu"}
         aria-expanded={open}
         tabIndex={0}
         style={{ transform: `translate(-50%, -50%) scale(${panelScale})` }}
       >
-        {/* Anillos-enlace (trazos), fondos blanco y negro sólidos */}
+        {/* Link rings */}
         {ITEMS.map((it, i) => {
           const black = isBlack(i);
           const g = bandGeom(i, hovered);
@@ -134,28 +136,28 @@ export default function DianaMenu() {
           );
         })}
 
-        {/* Centro: punto de la diana (cerrado) / botón cerrar ✕ (abierto) */}
+        {/* Center: the DONATE button (accent disc) */}
         <circle
-          className="diana-close"
+          className="diana-donate"
           cx={50}
           cy={50}
           r={RW}
-          fill="#111111"
           onMouseEnter={() => setHovered(-2)}
           onMouseLeave={() => setHovered((h) => (h === -2 ? null : h))}
           onClick={onCenterClick}
         />
-        <g
-          className="diana-x"
-          stroke="#ffffff"
-          strokeWidth={0.9}
-          strokeLinecap="round"
+        <text
+          className="diana-donate-label"
+          x={50}
+          y={50}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fill="#ffffff"
         >
-          <line x1={47.4} y1={47.4} x2={52.6} y2={52.6} />
-          <line x1={52.6} y1={47.4} x2={47.4} y2={52.6} />
-        </g>
+          donate
+        </text>
 
-        {/* Etiquetas (solo visibles en abierto) */}
+        {/* Ring labels (visible when open) */}
         {ITEMS.map((it, i) => {
           const black = isBlack(i);
           const hot = hovered === i;
@@ -170,6 +172,9 @@ export default function DianaMenu() {
               dominantBaseline="middle"
               fill={black ? "#ffffff" : "#111111"}
               style={{ transitionDelay: open ? `${0.1 + i * 0.05}s` : "0s" }}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
+              onClick={(e) => open && go(e, it.href)}
             >
               {it.label}
             </text>
