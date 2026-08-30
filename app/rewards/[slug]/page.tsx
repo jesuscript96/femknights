@@ -3,6 +3,8 @@ import Link from "next/link";
 import Reveal from "../../components/Reveal";
 import Target from "../../components/Target";
 import RewardIntake from "./RewardIntake";
+import HeroVideo from "../../components/HeroVideo";
+import KnightCatalogue from "../../components/KnightCatalogue";
 import { REWARDS, rewardBySlug } from "../../content";
 
 export function generateStaticParams() {
@@ -77,10 +79,23 @@ export default async function RewardDetailPage({
         </Reveal>
 
         <Reveal className="article-figure">
-          <figure className="media">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={d.image} alt={`${reward.name} — the room`} loading="lazy" />
-          </figure>
+          {d.video ? (
+            <HeroVideo
+              src={d.video.src}
+              poster={d.video.poster}
+              portrait={d.video.portrait}
+              alt={`${reward.name} — the room`}
+            />
+          ) : (
+            <figure className="media">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={d.image}
+                alt={`${reward.name} — the room`}
+                loading="lazy"
+              />
+            </figure>
+          )}
         </Reveal>
 
         {/* ---------- The reframe ---------- */}
@@ -142,6 +157,15 @@ export default async function RewardDetailPage({
               ))}
             </ol>
           </>
+        )}
+
+        {/* ---------- The knight catalogue ---------- */}
+        {d.doorways && (
+          <KnightCatalogue
+            limit={8}
+            title="The knight catalogue"
+            lead="Every teaching, you choose your knight. These are a few of them."
+          />
         )}
 
         {/* ---------- What you walk away with ---------- */}

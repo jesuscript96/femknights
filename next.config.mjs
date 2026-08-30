@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-    ],
-  },
   // The rooms were renamed and moved under /rewards; keep the old links alive.
   async redirects() {
     return [

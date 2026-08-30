@@ -74,6 +74,8 @@ export type RewardDetail = {
   /** The thank-you line that sits directly under the reward name. */
   thanks: string;
   image: string;
+  /** Some rooms open on motion rather than a still. */
+  video?: { src: string; poster: string; portrait?: boolean };
   statement: string;
   lead: string;
   reframe: { title: string; paras: string[] };
@@ -106,24 +108,79 @@ export type Reward = {
   detail: RewardDetail;
 };
 
-const img = (id: string, q = 80) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=${q}`;
+const img = (name: string) => `/img/${name}.webp`;
 
+/**
+ * Niki's own material (Dressingroom folder), converted to WebP.
+ * No stock placeholders left.
+ */
 export const IMG = {
-  armour: img("1509248961158-e54f6934749c"),
-  banner: img("1519681393784-d120267933ba"),
-  studio: img("1513364776144-60967b0f800f"),
-  ritual: img("1507003211169-0a1dd7228f2d"),
-  horse: img("1553284965-83fd3e82fa5a"),
-  room: img("1600607687939-ce8a6c25118c"),
-  table: img("1414235077428-338989a2e8c0"),
-  mexico: img("1518105779142-d975f22f1b0a"),
-  poster: img("1561214115-f2f134cc4912"),
-  classroom: img("1524178232363-1fb2b075b655"),
-  mirror: img("1512310604669-443f26c35f52"),
-  field: img("1500534314209-a25ddb2bd429"),
-  portrait: img("1544005313-94ddf0286df2"),
+  // Jeanne d'Arc
+  jeanne: img("jeanne-lilies"),
+  jeanneBanner: img("jeanne-banner"),
+  jeanneLynch: img("jeanne-lynch"),
+
+  // Armour and knights
+  armour: img("knight-winged"),
+  knightYoung: img("knight-young"),
+  knightChild: img("knight-child"),
+  knightNow: img("knight-subway"),
+  armourVintage: img("armour-vintage"),
+  armourOrnate: img("armour-ornate"),
+  horse: img("rider"),
+
+  // The rooms
+  room: img("dressing-room-red"),
+  redAxe: img("red-axe"),
+  field: img("open-field"),
+  ritual: img("knight-bjork"),
+
+  // Grids and gatherings
+  table: img("grid-four-c"),
+  mexico: img("grid-four-a"),
+  poster: img("grid-four-b"),
+
+  // Portraits used as sections
+  studio: img("knight-child"),
+  classroom: img("knight-goodall"),
+  mirror: img("knight-bella"),
+  portrait: img("knight-brienne"),
 };
+
+export const VIDEO = {
+  hero: { src: "/video/hero.mp4", poster: "/video/hero-poster.jpg" },
+  dressingRoom: {
+    src: "/video/dressing-room.mp4",
+    poster: "/video/dressing-room-poster.jpg",
+    portrait: true,
+  },
+};
+
+export const LOGO = "/img/studio-niki.png";
+
+/**
+ * The knight catalogue — "Every teaching, you choose your knight.
+ * I have an amazing knight catalogue." (briefing)
+ * Only figures identified with confidence are named here.
+ */
+export const KNIGHTS = [
+  { name: "Jeanne d'Arc", src: img("jeanne-lilies") },
+  { name: "Jane Goodall", src: img("knight-goodall") },
+  { name: "Frida Kahlo", src: img("knight-frida") },
+  { name: "Björk", src: img("knight-bjork") },
+  { name: "Princess Leia", src: img("knight-leia") },
+  { name: "Malala Yousafzai", src: img("knight-malala") },
+  { name: "Princess Diana", src: img("knight-diana") },
+  { name: "Vivienne Westwood", src: img("knight-westwood") },
+  { name: "Serena Williams", src: img("knight-serena") },
+  { name: "Yoko Ono", src: img("knight-yoko") },
+  { name: "Sojourner Truth", src: img("knight-sojourner") },
+  { name: "Ruth Bader Ginsburg", src: img("knight-rbg") },
+  { name: "Bella Baxter", src: img("knight-bella") },
+  { name: "Brienne of Tarth", src: img("knight-brienne") },
+  { name: "Lady Gaga", src: img("knight-gaga") },
+  { name: "Jennifer Coolidge", src: img("knight-coolidge") },
+];
 
 /** Shared "what's included" groups, so a change lands on every tier at once. */
 const FROM_CLASSROOM: IncludedGroup = {
@@ -299,6 +356,7 @@ export const REWARDS: Reward[] = [
       thanks:
         "As a BIG thank you for your donation I call you a Founding Member of the Knight Academy, and I invite you into the CLASS ROOM and the DRESSING ROOM for a 1:1 Knight Discovery Session.",
       image: IMG.mirror,
+      video: VIDEO.dressingRoom,
       statement: "Some call it personal branding. I call it meeting your knight.",
       lead: "One clear mirror. One sharp blade. One honest guide. Ninety minutes, and you don't unsee her again.",
       reframe: {
@@ -572,7 +630,7 @@ export type Block =
   | { type: "target" }
   | { type: "image"; src: string; alt: string }
   | { type: "images"; items: { src: string; alt: string }[] }
-  | { type: "video"; poster: string; alt: string; caption?: string; src?: string }
+  | { type: "video"; src: string; poster: string; alt: string; caption?: string }
   | { type: "expandable"; label: string; blocks: Block[] }
   | {
       type: "imageQuote";
@@ -836,7 +894,7 @@ export const STORY: Block[] = [
       </>
     ),
   },
-  { type: "image", src: IMG.studio, alt: "The studio where the work is made" },
+  { type: "image", src: IMG.knightChild, alt: "Before I called myself one out loud" },
   { type: "h2", text: "My story" },
   {
     type: "p",
@@ -1003,8 +1061,8 @@ export const EXHIBITION: Block[] = [
   {
     type: "images",
     items: [
-      { src: IMG.banner, alt: "Banner work" },
-      { src: IMG.mexico, alt: "Billboards across Mexico City" },
+      { src: IMG.jeanneBanner, alt: "Jeanne d'Arc and her banner" },
+      { src: IMG.mexico, alt: "The crowd the work is made for" },
     ],
   },
   {

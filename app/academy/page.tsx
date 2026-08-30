@@ -2,6 +2,7 @@ import Link from "next/link";
 import Reveal from "../components/Reveal";
 import Target from "../components/Target";
 import Article from "../components/Article";
+import KnightCatalogue from "../components/KnightCatalogue";
 import { ACADEMY_INTRO, REWARDS, SEVEN_DOORWAYS } from "../content";
 
 export const metadata = { title: "Knight Academy" };
@@ -54,6 +55,10 @@ export default function AcademyPage() {
           ))}
         </ol>
       </section>
+
+      <div className="container">
+        <KnightCatalogue lead="I study epic women — real and fictional, past and present — and ask what's underneath the myth. Every teaching, you choose one." />
+      </div>
 
       <div className="container article-cta">
         <Link href="/rewards" className="btn btn-dark btn-lg">

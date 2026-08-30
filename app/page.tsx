@@ -2,11 +2,12 @@ import Link from "next/link";
 import Reveal from "./components/Reveal";
 import Target from "./components/Target";
 import Article from "./components/Article";
+import HeroVideo from "./components/HeroVideo";
 import {
   CAMPAIGN,
   MARQUEE_LINE,
   REWARDS,
-  IMG,
+  VIDEO,
   HOME_INTRO_1,
   HOME_INTRO_2,
   HOME_STORY,
@@ -43,16 +44,11 @@ export default function Home() {
 
           {/* Video */}
           <Reveal className="cover-video" delay={60}>
-            <figure className="video-frame">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={IMG.armour} alt="The armour, being forged" />
-              <span className="video-play" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="34" height="34">
-                  <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
-                </svg>
-              </span>
-              <span className="video-placeholder-note">Video coming</span>
-            </figure>
+            <HeroVideo
+              src={VIDEO.hero.src}
+              poster={VIDEO.hero.poster}
+              alt="The dressing room of a female knight"
+            />
           </Reveal>
 
           {/* Intro text 1 */}

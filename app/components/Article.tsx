@@ -88,21 +88,15 @@ function renderBlock(b: Block, key: string | number) {
       return (
         <Reveal className="article-figure" key={key}>
           <figure className="video-frame">
-            {b.src ? (
-              // eslint-disable-next-line jsx-a11y/media-has-caption
-              <video src={b.src} poster={b.poster} controls playsInline />
-            ) : (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={b.poster} alt={b.alt} loading="lazy" />
-                <span className="video-play" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="26" height="26">
-                    <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
-                  </svg>
-                </span>
-                <span className="video-placeholder-note">Video coming</span>
-              </>
-            )}
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <video
+              src={b.src}
+              poster={b.poster}
+              aria-label={b.alt}
+              controls
+              playsInline
+              preload="metadata"
+            />
             {b.caption && <figcaption>{b.caption}</figcaption>}
           </figure>
         </Reveal>

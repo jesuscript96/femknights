@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CAMPAIGN } from "../content";
+import { CAMPAIGN, LOGO } from "../content";
 
 export default function SiteHeader() {
   const pathname = usePathname();
@@ -11,8 +11,9 @@ export default function SiteHeader() {
   return (
     <header className="site-header">
       <div className="container">
-        <Link className="logo" href="/">
-          {CAMPAIGN.studio}
+        <Link className="logo" href="/" aria-label={CAMPAIGN.studio}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={LOGO} alt={CAMPAIGN.studio} />
         </Link>
 
         {inDonate && (
