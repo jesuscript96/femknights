@@ -1,71 +1,118 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Target from "../../components/Target";
-import { REWARDS, CAMPAIGN } from "../../content";
+import { CAMPAIGN, REWARDS } from "../../content";
 import { useDonate } from "../DonateContext";
 
-export default function ThankYou() {
-  const { tierId, amount, name, frequency, reset } = useDonate();
+export default function ThankYouStep() {
+  const { tierId, amount, blankCheque, frequency, name, message, set } =
+    useDonate();
+  const router = useRouter();
   const reward = REWARDS.find((r) => r.id === tierId) ?? null;
+  const [starting, setStarting] = useState(false);
 
-  // Snapshot the details, then clear state so a refresh/back is clean.
-  const snap = useRef({
-    name,
-    amount,
-    frequency,
-    rewardName: reward?.name,
-    rings: reward?.rings ?? 3,
-    filled: reward?.filledCenter ?? true,
-  });
-
+  // Landed here without picking a room — send them back to choose one.
   useEffect(() => {
-    const t = window.setTimeout(reset, 400);
-    return () => window.clearTimeout(t);
-  }, [reset]);
+    if (!tierId) router.replace("/donate");
+  }, [tierId, router]);
 
-  const s = snap.current;
+  if (!reward) return null;
+
+  const ready = name.trim().length > 1;
+
+  const gift = blankCheque
+    ? "Blank cheque"
+    : `€${amount}${frequency === "monthly" ? ` / month · ${CAMPAIGN.monthlyMonths} months` : ""}`;
+
+  const startPayment = () => {
+    setStarting(true);
+    // Prototype: stands in for the hand-off to the external payment platform.
+    window.setTimeout(() => router.push("/donate/complete"), 1600);
+  };
 
   return (
-    <section className="thankyou">
+    <section className="step">
       <div className="thankyou-target">
-        <Target rings={s.rings} filledCenter={s.filled} size={140} strokeRatio={0.5} />
+        <Target
+          rings={reward.rings}
+          filledCenter={reward.filledCenter}
+          size={110}
+          strokeRatio={0.5}
+        />
       </div>
 
       <p className="step-kicker">Big thank you</p>
-      <h1 className="thankyou-title">
-        {s.name ? `Thank you, ${s.name}.` : "Thank you."}
-      </h1>
-      <p className="thankyou-lead">
-        You just helped build the room. Your name now sits inside the work — not
-        beside it. This is the moment a solo knight stops being solo.
+      <h1 className="step-title">Thank you for stepping into the room.</h1>
+      <p className="step-lead">
+        You just helped build the armour. Before you pay, leave something behind
+        — a line, a name, a reason. It goes into the work, not beside it.
       </p>
 
-      {s.amount && (
-        <div className="thankyou-receipt">
-          <span>
-            {s.rewardName} · €{s.amount}
-            {s.frequency === "monthly" ? " / month" : ""}
-          </span>
+      <div className="receipt">
+        <div className="receipt-row">
+          <span>Your reward</span>
+          <strong>{reward.name}</strong>
         </div>
-      )}
+        <div className="receipt-row">
+          <span>Your gift</span>
+          <strong>{gift}</strong>
+        </div>
+        <div className="receipt-row">
+          <span />
+          <Link href={`/rewards/${reward.slug}`} className="selected-change">
+            Change
+          </Link>
+        </div>
+      </div>
 
-      <p className="thankyou-next">
-        A confirmation is on its way to your inbox. If your reward includes a
-        seat or a session, you&rsquo;ll receive a short form to reserve your
-        place. The exhibition opens {CAMPAIGN.opens} at {CAMPAIGN.venue}.
+      <div className="field-grid single">
+        <label className="field">
+          <span>Your message</span>
+          <textarea
+            rows={4}
+            value={message}
+            placeholder="Say something to Niki — or to the knight you are becoming."
+            onChange={(e) => set({ message: e.target.value })}
+          />
+        </label>
+
+        <label className="field">
+          <span>Your name</span>
+          <input
+            value={name}
+            placeholder="The name that goes inside the work"
+            onChange={(e) => set({ name: e.target.value })}
+          />
+        </label>
+      </div>
+
+      <p className="demo-note">
+        Prototype — starting the payment is simulated here. This is where the
+        hand-off to the payment platform will go.
       </p>
 
-      <p className="thankyou-signature">🖤 Niki — the dot says it all.</p>
-
-      <div className="step-actions center">
-        <Link href="/" className="btn btn-dark btn-lg">
-          Back to the campaign
-        </Link>
-        <Link href="/story" className="btn btn-ghost btn-lg">
-          Read the story
-        </Link>
+      <div className="step-actions">
+        <button
+          className="btn btn-primary btn-lg"
+          disabled={!ready || starting}
+          onClick={startPayment}
+        >
+          {starting ? (
+            <span className="pay-spinner" aria-live="polite">
+              <span className="spinner" /> Starting…
+            </span>
+          ) : (
+            <>Start payment</>
+          )}
+        </button>
+        {!starting && (
+          <Link href={`/rewards/${reward.slug}`} className="step-back">
+            ← Back to {reward.name}
+          </Link>
+        )}
       </div>
     </section>
   );

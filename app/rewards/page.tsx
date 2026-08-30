@@ -1,23 +1,24 @@
 import Link from "next/link";
 import Reveal from "../components/Reveal";
 import Target from "../components/Target";
-import { REWARDS } from "../content";
+import { REWARDS, REWARDS_INTRO } from "../content";
 
-export const metadata = { title: "Select a reward" };
+export const metadata = { title: "Rewards — The Female Knight" };
 
 export default function RewardsPage() {
   return (
     <main className="container rewards-page">
       <Reveal as="p" className="article-kicker">
-        Select reward
+        {REWARDS_INTRO.kicker}
       </Reveal>
       <Reveal as="h1" className="article-title">
-        You donate. You get a reward.
+        {REWARDS_INTRO.title}
       </Reveal>
       <Reveal as="p" className="article-lead">
-        The rewards are linked to a price range. Every gift builds the armour —
-        the size doesn&rsquo;t change what it means. Pick your tier, then step
-        into the room.
+        {REWARDS_INTRO.lead}
+      </Reveal>
+      <Reveal as="p" className="article-p">
+        {REWARDS_INTRO.body}
       </Reveal>
 
       <div className="rewards-grid">
@@ -41,11 +42,8 @@ export default function RewardsPage() {
               ))}
             </ul>
             <div className="reward-card-actions">
-              <Link href={`/donate?tier=${r.id}`} className="btn btn-primary">
-                Select this reward
-              </Link>
-              <Link href={r.href} className="tier-link">
-                Details →
+              <Link href={`/rewards/${r.slug}`} className="btn btn-primary">
+                {r.cta}
               </Link>
             </div>
           </Reveal>

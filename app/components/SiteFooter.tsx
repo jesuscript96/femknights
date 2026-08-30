@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CAMPAIGN, HEADER_LINKS } from "../content";
+import { CAMPAIGN, NAV_LINKS } from "../content";
 
 export default function SiteFooter() {
   const pathname = usePathname();
@@ -12,10 +12,12 @@ export default function SiteFooter() {
   return (
     <footer id="contact" className="contact">
       <div className="container">
-        <p className="eyebrow">{CAMPAIGN.callToAction}</p>
-        <h2>Help me build the room. Then step into your own.</h2>
+        <p className="eyebrow">
+          Opening {CAMPAIGN.opens} · {CAMPAIGN.venue}
+        </p>
+        <h2>{CAMPAIGN.title}</h2>
         <Link className="contact-mail" href="/donate">
-          Back this campaign
+          {CAMPAIGN.callToAction}
           <span className="contact-arrow" aria-hidden="true">
             ↗
           </span>
@@ -23,10 +25,11 @@ export default function SiteFooter() {
 
         <div className="footer-bottom">
           <span>
-            © {new Date().getFullYear()} {CAMPAIGN.title} — {CAMPAIGN.venue}
+            © {new Date().getFullYear()} {CAMPAIGN.studio} — {CAMPAIGN.title},{" "}
+            {CAMPAIGN.venue}
           </span>
           <div className="footer-links">
-            {HEADER_LINKS.map((l) => (
+            {NAV_LINKS.filter((l) => l.href !== "/").map((l) => (
               <Link key={l.href} href={l.href}>
                 {l.label}
               </Link>

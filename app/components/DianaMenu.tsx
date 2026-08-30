@@ -2,16 +2,19 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { NAV } from "../content";
+import { DIANA_RINGS } from "../content";
 
-/** Menu rings, inner (center) → outer. The center is the DONATE button. */
-const ITEMS = NAV;
+/**
+ * The diana IS the donation button.
+ * Rings run inner → outer: blanc · 750 · 250 · 50 · rewards.
+ * The centre is an X: it opens the target when closed, closes it when open.
+ */
+const ITEMS = DIANA_RINGS;
 
-// Geometry in viewBox 0..100, center (50,50).
-const RW = 7; // band thickness / central disc radius
+// Geometry in viewBox 0..100, centre (50,50).
+const RW = 7.2; // band thickness / central disc radius
 const GROW = RW * 0.7; // how much ONLY the hovered band fattens
-const isBlack = (i: number) => i % 2 === 1; // alternate black/white rings
-const CLOSED_SCALE = 0.14;
+const isBlack = (i: number) => i % 2 === 1; // alternate white/black rings
 
 /**
  * Band geometry with an accordion effect: the hovered band grows outward
@@ -62,124 +65,120 @@ export default function DianaMenu() {
     };
   }, [open, close]);
 
-  const go = (e: React.MouseEvent, href: string) => {
-    e.preventDefault();
+  const go = (href: string) => {
     close();
     router.push(href);
   };
 
-  const onRingClick = (e: React.MouseEvent, i: number) => {
-    if (open) go(e, ITEMS[i].href);
+  const onRingActivate = (i: number) => {
+    if (open) go(ITEMS[i].href);
     else setOpen(true);
   };
 
-  // Center = DONATE when open; opens the menu when closed.
-  const onCenterClick = (e: React.MouseEvent) => {
-    if (open) go(e, "/donate");
+  // Centre: opens when closed, closes when open.
+  const onCentreActivate = () => {
+    if (open) close();
     else setOpen(true);
   };
 
   // Don't overlay the donate button on the donate flow itself.
   if (pathname?.startsWith("/donate")) return null;
 
-  const panelScale = open ? 1 : CLOSED_SCALE;
-
   return (
-    <div
-      className="diana"
-      data-open={open}
-      onKeyDown={(e) => {
-        if (!open && (e.key === "Enter" || e.key === " ")) {
-          e.preventDefault();
-          setOpen(true);
-        }
-      }}
-    >
+    <div className="diana" data-open={open}>
       {/* Scrim: click outside to close */}
       <button
         className="diana-scrim"
-        aria-label="Close menu"
+        aria-label="Close the donation menu"
         tabIndex={open ? 0 : -1}
         onClick={close}
       />
 
-      {/* Hint shown while collapsed */}
-      {!open && <span className="diana-hint" aria-hidden="true">donate</span>}
+      {/* The word DONATE, underneath the button, in strong pink */}
+      <span className="diana-hint" aria-hidden="true">
+        donate
+      </span>
 
       <svg
         className="diana-panel"
         viewBox="0 0 100 100"
-        role="button"
-        aria-label={open ? "Menu open — center is donate" : "Open donate menu"}
-        aria-expanded={open}
-        tabIndex={0}
-        style={{ transform: `translate(-50%, -50%) scale(${panelScale})` }}
+        aria-label="Donation menu"
       >
-        {/* Link rings */}
+        {/* Amount rings */}
         {ITEMS.map((it, i) => {
           const black = isBlack(i);
           const g = bandGeom(i, hovered);
-          return (
-            <circle
-              key={it.label}
-              className="diana-band"
-              cx={50}
-              cy={50}
-              r={g.r}
-              fill="none"
-              stroke={black ? "#111111" : "#ffffff"}
-              strokeWidth={g.w}
-              onMouseEnter={() => setHovered(i)}
-              onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
-              onClick={(e) => onRingClick(e, i)}
-            />
-          );
-        })}
-
-        {/* Center: the DONATE button (accent disc) */}
-        <circle
-          className="diana-donate"
-          cx={50}
-          cy={50}
-          r={RW}
-          onMouseEnter={() => setHovered(-2)}
-          onMouseLeave={() => setHovered((h) => (h === -2 ? null : h))}
-          onClick={onCenterClick}
-        />
-        <text
-          className="diana-donate-label"
-          x={50}
-          y={50}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill="#ffffff"
-        >
-          donate
-        </text>
-
-        {/* Ring labels (visible when open) */}
-        {ITEMS.map((it, i) => {
-          const black = isBlack(i);
           const hot = hovered === i;
-          const g = bandGeom(i, hovered);
           return (
-            <text
+            <g
               key={it.label}
-              className={`diana-label${hot ? " is-hot" : ""}`}
-              x={50}
-              y={50 - g.r}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill={black ? "#ffffff" : "#111111"}
-              style={{ transitionDelay: open ? `${0.1 + i * 0.05}s` : "0s" }}
+              className="diana-ring"
+              role="link"
+              tabIndex={open ? 0 : -1}
+              aria-label={
+                it.label === "rewards"
+                  ? "All rewards"
+                  : it.label === "blanc"
+                    ? "Blanc — name your own amount"
+                    : `Donate €${it.label} or more`
+              }
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
-              onClick={(e) => open && go(e, it.href)}
+              onFocus={() => setHovered(i)}
+              onBlur={() => setHovered((h) => (h === i ? null : h))}
+              onClick={() => onRingActivate(i)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onRingActivate(i);
+                }
+              }}
             >
-              {it.label}
-            </text>
+              <circle
+                className="diana-band"
+                cx={50}
+                cy={50}
+                r={g.r}
+                fill="none"
+                stroke={black ? "#111111" : "#ffffff"}
+                strokeWidth={g.w}
+              />
+              <text
+                className={`diana-label${hot ? " is-hot" : ""}`}
+                x={50}
+                y={50 - g.r}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill={black ? "#ffffff" : "#111111"}
+                style={{ transitionDelay: open ? `${0.1 + i * 0.05}s` : "0s" }}
+              >
+                {it.label}
+              </text>
+            </g>
           );
         })}
+
+        {/* Centre: the sun-orange disc with an X */}
+        <g
+          className="diana-centre"
+          role="button"
+          tabIndex={0}
+          aria-label={open ? "Close the donation menu" : "Open the donation menu"}
+          aria-expanded={open}
+          onClick={onCentreActivate}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onCentreActivate();
+            }
+          }}
+        >
+          <circle className="diana-donate" cx={50} cy={50} r={RW} />
+          <g className="diana-x" stroke="#ffffff" strokeWidth={0.9} strokeLinecap="round">
+            <line x1={47.4} y1={47.4} x2={52.6} y2={52.6} />
+            <line x1={52.6} y1={47.4} x2={47.4} y2={52.6} />
+          </g>
+        </g>
       </svg>
     </div>
   );

@@ -1,49 +1,21 @@
-"use client";
-
-import { Suspense, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 import Target from "../components/Target";
-import { REWARDS } from "../content";
-import { useDonate } from "./DonateContext";
+import { REWARDS, REWARDS_INTRO } from "../content";
 
-function SelectReward() {
-  const { tierId, set } = useDonate();
-  const router = useRouter();
-  const params = useSearchParams();
+export const metadata = { title: "Donate — The Female Knight" };
 
-  // Preselect from ?tier= (deep links from reward/academy pages).
-  useEffect(() => {
-    const q = params.get("tier");
-    if (q && REWARDS.some((r) => r.id === q)) {
-      const r = REWARDS.find((x) => x.id === q)!;
-      set({ tierId: q, amount: r.min });
-    }
-  }, [params, set]);
-
-  const choose = (id: string, min: number) => {
-    set({ tierId: id, amount: min });
-    router.push("/donate/reward");
-  };
-
+export default function DonatePage() {
   return (
     <section className="step">
-      <p className="step-kicker">Step 1 — Select reward</p>
-      <h1 className="step-title">Choose your tier</h1>
+      <p className="step-kicker">Donate</p>
+      <h1 className="step-title">{REWARDS_INTRO.title}</h1>
       <p className="step-lead">
-        You donate, you get a reward. Pick the one that fits — you set the exact
-        amount next.
+        {REWARDS_INTRO.body} You set the amount on the room&rsquo;s own page.
       </p>
 
       <div className="donate-tiers">
         {REWARDS.map((r) => (
-          <button
-            key={r.id}
-            className={
-              "donate-tier" + (tierId === r.id ? " is-selected" : "")
-            }
-            onClick={() => choose(r.id, r.min)}
-          >
+          <Link key={r.id} className="donate-tier" href={`/rewards/${r.slug}`}>
             <Target
               rings={r.rings}
               filledCenter={r.filledCenter}
@@ -58,21 +30,13 @@ function SelectReward() {
             <span className="donate-tier-go" aria-hidden="true">
               →
             </span>
-          </button>
+          </Link>
         ))}
       </div>
 
       <Link href="/rewards" className="step-back">
-        ← Compare rewards in detail
+        ← Compare the rooms in detail
       </Link>
     </section>
-  );
-}
-
-export default function DonateSelect() {
-  return (
-    <Suspense fallback={<div className="step">Loading…</div>}>
-      <SelectReward />
-    </Suspense>
   );
 }

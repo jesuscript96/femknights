@@ -3,19 +3,15 @@
 import { usePathname } from "next/navigation";
 
 const STEPS = [
-  { href: "/donate", label: "Reward" },
-  { href: "/donate/reward", label: "Your gift" },
-  { href: "/donate/payment", label: "Frequency" },
-  { href: "/donate/pay", label: "Pay" },
-  { href: "/donate/thank-you", label: "Done" },
+  { href: "/donate", label: "Choose your room" },
+  { href: "/donate/thank-you", label: "Your message" },
+  { href: "/donate/complete", label: "Payment" },
 ];
 
 export default function StepBar() {
   const pathname = usePathname();
-  const current = Math.max(
-    0,
-    STEPS.findIndex((s) => s.href === pathname)
-  );
+  const found = STEPS.findIndex((s) => s.href === pathname);
+  const current = found < 0 ? 0 : found;
 
   return (
     <ol className="stepbar container" aria-label="Donation progress">

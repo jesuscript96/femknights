@@ -1,7 +1,6 @@
-import { DonateProvider } from "./DonateContext";
 import StepBar from "./StepBar";
 
-export const metadata = { title: "Donate — The Female Knight" };
+export const metadata = { title: "Donate" };
 
 export default function DonateLayout({
   children,
@@ -9,11 +8,9 @@ export default function DonateLayout({
   children: React.ReactNode;
 }) {
   return (
-    <DonateProvider>
-      <main className="donate">
-        <StepBar />
-        <div className="donate-body container">{children}</div>
-      </main>
-    </DonateProvider>
+    <main className="donate">
+      <StepBar />
+      <div className="donate-body container">{children}</div>
+    </main>
   );
 }

@@ -12,10 +12,14 @@ export type Frequency = "once" | "monthly";
 
 export type DonateState = {
   tierId: string | null;
+  /** null together with blankCheque = the Open Field blank cheque. */
   amount: number | null;
+  blankCheque: boolean;
   frequency: Frequency;
   name: string;
   email: string;
+  /** The dedication the donor writes before starting the payment. */
+  message: string;
 };
 
 type DonateCtx = DonateState & {
@@ -26,9 +30,11 @@ type DonateCtx = DonateState & {
 const DEFAULT: DonateState = {
   tierId: null,
   amount: null,
+  blankCheque: false,
   frequency: "once",
   name: "",
   email: "",
+  message: "",
 };
 
 const Ctx = createContext<DonateCtx | null>(null);
