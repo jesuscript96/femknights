@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Target from "../../components/Target";
-import { CAMPAIGN, REWARDS } from "../../content";
+import { CAMPAIGN, DONORBOX, REWARDS } from "../../content";
 import { useDonate } from "../DonateContext";
 
 export default function ThankYouStep() {
@@ -29,7 +29,17 @@ export default function ThankYouStep() {
 
   const startPayment = () => {
     setStarting(true);
-    // Prototype: stands in for the hand-off to the external payment platform.
+    if (DONORBOX.campaign) {
+      // Hand off to Donorbox with the gift already filled in; Donorbox's own
+      // "after donation" redirect brings the donor back to /donate/complete.
+      const params = new URLSearchParams({
+        default_interval: frequency === "monthly" ? "m" : "o",
+      });
+      if (!blankCheque && amount) params.set("amount", String(amount));
+      window.location.href = `https://donorbox.org/${DONORBOX.campaign}?${params}`;
+      return;
+    }
+    // Not connected yet: simulate the hand-off.
     window.setTimeout(() => router.push("/donate/complete"), 1600);
   };
 
@@ -89,10 +99,12 @@ export default function ThankYouStep() {
         </label>
       </div>
 
-      <p className="demo-note">
-        Prototype — starting the payment is simulated here. This is where the
-        hand-off to the payment platform will go.
-      </p>
+      {!DONORBOX.campaign && (
+        <p className="demo-note">
+          Prototype — starting the payment is simulated here. This is where the
+          hand-off to the payment platform will go.
+        </p>
+      )}
 
       <div className="step-actions">
         <button

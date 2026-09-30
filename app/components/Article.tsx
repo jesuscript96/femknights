@@ -148,15 +148,22 @@ function renderBlock(b: Block, key: string | number) {
 /**
  * Renders a long-form page from a list of content blocks.
  * `bare` drops the page wrapper so a home section can host the blocks itself.
+ * `editorial` sets the page in the offset reading column (see globals.css).
  */
 export default function Article({
   blocks,
   bare = false,
+  editorial = false,
 }: {
   blocks: Block[];
   bare?: boolean;
+  editorial?: boolean;
 }) {
   const body = blocks.map((b, i) => renderBlock(b, i));
   if (bare) return <>{body}</>;
-  return <article className="article container">{body}</article>;
+  return (
+    <article className={"article container" + (editorial ? " editorial" : "")}>
+      {body}
+    </article>
+  );
 }

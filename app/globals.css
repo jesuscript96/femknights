@@ -2577,3 +2577,140 @@ textarea:focus-visible,
     transition: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Editorial reading layout (home) — after WePresent's story pages.
+   Same fonts, same elements; only placement and scale change:
+   one reading column set right of centre, a large lead, a smaller
+   body, and the key sentences breaking out across the full width.
+   ═══════════════════════════════════════════════════════════════ */
+.editorial {
+  container-type: inline-size;
+  /* Reading column and wide (image) band, in % of the section width. */
+  --col-start: 0cqi;
+  --col-w: 100cqi;
+  --wide-start: 0cqi;
+  --wide-w: 100cqi;
+}
+@media (min-width: 821px) {
+  .editorial {
+    --col-start: 18cqi;
+    --col-w: 64cqi;
+    --wide-start: 6cqi;
+    --wide-w: 88cqi;
+  }
+}
+@media (min-width: 1101px) {
+  .editorial {
+    --col-start: 36cqi;
+    --col-w: 46cqi;
+    --wide-start: 8cqi;
+    --wide-w: 84cqi;
+  }
+}
+
+/* --x is how far the current parent already sits from the section's
+   left edge, so nested blocks (inside "Read the full story") land on
+   the same lines as top-level ones. */
+.editorial .article {
+  --x: 0cqi;
+}
+/* On the long-form pages the article itself is the section. */
+.article.editorial {
+  max-width: var(--maxw);
+}
+.editorial .expandable-inner {
+  --x: var(--col-start);
+  border-left: 0;
+  padding-left: 0;
+  margin-top: 8px;
+}
+
+/* In the column */
+.editorial :is(
+    .article-kicker,
+    .article-title,
+    .article-cta,
+    .article-lead,
+    .article-p,
+    .article-h2,
+    .article-list,
+    .article-quote,
+    .article-signature,
+    .expandable,
+    .faq
+  ),
+.editorial > .home-more,
+.editorial .cover-intro,
+.editorial .cover-actions {
+  margin-left: calc(var(--col-start) - var(--x, 0cqi));
+  max-width: var(--col-w);
+}
+
+.editorial .article-kicker {
+  margin-bottom: 18px;
+}
+.editorial .article-title {
+  margin-bottom: clamp(20px, 2.4vw, 32px);
+}
+.editorial .article-lead,
+.editorial .cover-intro p {
+  font-size: clamp(21px, 2vw, 29px);
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+}
+.editorial .article-lead {
+  margin-top: 0;
+}
+.editorial .article-p {
+  font-size: clamp(17px, 1.25vw, 19px);
+  line-height: 1.5;
+  margin-top: 1.1em;
+}
+.editorial .article-h2 {
+  font-size: clamp(24px, 2.3vw, 34px);
+  line-height: 1.12;
+  margin-top: clamp(40px, 5vw, 64px);
+}
+.editorial .article-list li {
+  font-size: clamp(16px, 1.2vw, 18px);
+}
+.editorial .article-quote span {
+  font-size: clamp(21px, 2vw, 29px);
+  line-height: 1.25;
+}
+
+/* Breakouts: the key sentences take the whole width, centred and large. */
+.editorial .article-statement {
+  margin-left: calc(-1 * var(--x, 0cqi));
+  width: 100cqi;
+  max-width: none;
+  margin-block: clamp(56px, 9vw, 140px);
+  text-align: center;
+  font-size: clamp(32px, 5.4vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.intro-two.editorial .article-statement {
+  margin-block: 0;
+  font-size: clamp(30px, 4.4vw, 68px);
+  line-height: 1.06;
+}
+
+/* Images leave the column and open up into the wide band. */
+.editorial .article-figure,
+.editorial .image-grid,
+.editorial .image-quote {
+  margin-left: calc(var(--wide-start) - var(--x, 0cqi));
+  width: var(--wide-w);
+  margin-block: clamp(40px, 6vw, 88px);
+}
+
+/* Hero: title and video stay as they are; the intro and buttons move
+   onto the reading column, the funding bar keeps its place. */
+.editorial .cover-intro {
+  margin-top: clamp(40px, 6vw, 88px);
+  gap: 0.8em;
+}

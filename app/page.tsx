@@ -34,7 +34,7 @@ export default function Home() {
     <main>
       {/* ---------- 1 · Hero ---------- */}
       <section className="cover">
-        <div className="cover-inner container">
+        <div className="cover-inner container editorial">
           <Reveal as="p" className="cover-kicker">
             {CAMPAIGN.studio}
           </Reveal>
@@ -90,14 +90,14 @@ export default function Home() {
       </section>
 
       {/* ---------- 2 · Intro text 2 ---------- */}
-      <section className="section container intro-two">
+      <section className="section container intro-two editorial">
         <Reveal as="p" className="article-statement">
           {HOME_INTRO_2}
         </Reveal>
       </section>
 
       {/* ---------- 3 · My story ---------- */}
-      <section id="story" className="section container home-story">
+      <section id="story" className="section container home-story editorial">
         <div className="article">
           <Article blocks={HOME_STORY} bare />
         </div>
@@ -115,7 +115,7 @@ export default function Home() {
       </div>
 
       {/* ---------- 4 · The exhibition ---------- */}
-      <section id="exhibition" className="section container home-story">
+      <section id="exhibition" className="section container home-story editorial">
         <div className="article">
           <Article blocks={HOME_EXHIBITION} bare />
         </div>

@@ -23,6 +23,16 @@ export const CAMPAIGN = {
   monthlyMonths: 5, // Briefing: "MONTHLY (5 months)"
 };
 
+/**
+ * Donorbox handles the payment only; the site keeps the choice (room, amount,
+ * message). Leave `campaign` empty and "Start payment" stays simulated. Fill in
+ * the slug from donorbox.org/<slug> and it hands off to Donorbox, with the
+ * amount and monthly/once already set.
+ */
+export const DONORBOX = {
+  campaign: "",
+};
+
 /** The single line that runs across the home page. */
 export const MARQUEE_LINE = "BIG NEWS. THE ARMOUR IS BEING FORGED.";
 
