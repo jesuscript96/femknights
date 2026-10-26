@@ -5,17 +5,23 @@ import Article from "./components/Article";
 import HeroVideo from "./components/HeroVideo";
 import {
   CAMPAIGN,
-  MARQUEE_LINE,
   REWARDS,
   VIDEO,
+  HOME_TOPLINE,
+  HOME_SHOUT,
   HOME_INTRO_1,
+  HOME_ACTIONS,
+  HOME_SCALE_LINE,
   HOME_INTRO_2,
   HOME_STORY,
   HOME_EXHIBITION,
   HOME_TRUST,
+  HOME_DONATE,
+  MARQUEE_ITEMS,
   HOME_SEAT,
+  HOME_LANDSCAPE,
+  HOME_OBJECTIONS_TITLE,
   HOME_OBJECTIONS,
-  HOME_PULLQUOTE,
   HOME_KOIK,
   HOME_CLOSE,
 } from "./content";
@@ -36,7 +42,7 @@ export default function Home() {
       <section className="cover">
         <div className="cover-inner container editorial">
           <Reveal as="p" className="cover-kicker">
-            {CAMPAIGN.studio}
+            {HOME_TOPLINE}
           </Reveal>
           <Reveal as="h1" className="cover-title">
             {CAMPAIGN.title}
@@ -53,23 +59,24 @@ export default function Home() {
 
           {/* Intro text 1 */}
           <Reveal className="cover-intro" delay={80}>
-            <p className="cover-shout">{MARQUEE_LINE}</p>
-            {HOME_INTRO_1.map((p) => (
-              <p key={p}>{p}</p>
+            <p className="cover-shout">{HOME_SHOUT}</p>
+            {HOME_INTRO_1.map((p, i) => (
+              <p key={i}>{p}</p>
             ))}
           </Reveal>
 
           <Reveal className="cover-actions" delay={140}>
-            <Link href="/donate" className="btn btn-primary btn-lg">
-              {CAMPAIGN.callToAction}
+            <Link href={HOME_ACTIONS.primary.href} className="btn btn-primary btn-lg">
+              {HOME_ACTIONS.primary.label}
             </Link>
-            <Link href="/story" className="btn btn-ghost btn-lg">
-              Read my story
+            <Link href={HOME_ACTIONS.secondary.href} className="btn btn-ghost btn-lg">
+              {HOME_ACTIONS.secondary.label}
             </Link>
           </Reveal>
 
-          {/* Donation percentage scale */}
+          {/* Donation scale — on the same column as the intro text */}
           <Reveal className="cover-progress" delay={200}>
+            <p className="progress-line">{HOME_SCALE_LINE}</p>
             <div className="progress-track">
               <div className="progress-fill" style={{ width: `${pct}%` }} />
             </div>
@@ -79,7 +86,7 @@ export default function Home() {
                 {euros(CAMPAIGN.goalEuros)}
               </span>
               <span>
-                <strong>{CAMPAIGN.backers}</strong> knights backing
+                <strong>{CAMPAIGN.backers}</strong> fellow knights
               </span>
               <span>
                 <strong>{pct}%</strong> funded
@@ -89,45 +96,40 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------- 2 · Intro text 2 ---------- */}
-      <section className="section container intro-two editorial">
-        <Reveal as="p" className="article-statement">
-          {HOME_INTRO_2}
+      {/* ---------- 2 · Intro text 2 (centred, bold) ---------- */}
+      <section className="section container intro-two tight-bottom">
+        <Reveal className="callout">
+          <h2 className="callout-title">{HOME_INTRO_2.title}</h2>
+          <div className="callout-copy">
+            {HOME_INTRO_2.paras.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+          </div>
         </Reveal>
       </section>
 
       {/* ---------- 3 · My story ---------- */}
-      <section id="story" className="section container home-story editorial">
+      <section
+        id="story"
+        className="section container home-story editorial tight-top tight-bottom"
+      >
         <div className="article">
           <Article blocks={HOME_STORY} bare />
         </div>
-        <Reveal className="home-more">
-          <Link href="/story" className="tier-link">
-            Go to my story →
-          </Link>
-        </Reveal>
       </section>
 
-      <div className="target-divider" aria-hidden="true">
-        <div className="target-badge">
-          <Target rings={3} size={44} filledCenter strokeRatio={0.55} />
-        </div>
-      </div>
-
       {/* ---------- 4 · The exhibition ---------- */}
-      <section id="exhibition" className="section container home-story editorial">
+      <section
+        id="exhibition"
+        className="section container home-story editorial tight-top tight-bottom"
+      >
         <div className="article">
           <Article blocks={HOME_EXHIBITION} bare />
         </div>
-        <Reveal className="home-more">
-          <Link href="/exhibition" className="tier-link">
-            Go to the exhibition →
-          </Link>
-        </Reveal>
       </section>
 
       {/* ---------- 5 · Why trust the hands building this ---------- */}
-      <section className="section container">
+      <section className="section container tight-top tight-bottom">
         <Reveal className="image-quote">
           <figure className="media">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -135,18 +137,22 @@ export default function Home() {
           </figure>
           <div className="image-quote-text">
             <p className="image-quote-quote">{HOME_TRUST.quote}</p>
-            <p className="image-quote-body">{HOME_TRUST.body}</p>
+            {HOME_TRUST.body.map((p) => (
+              <p className="image-quote-body" key={p}>
+                {p}
+              </p>
+            ))}
           </div>
         </Reveal>
       </section>
 
-      {/* ---------- 6 · The four rooms ---------- */}
-      <section id="rewards" className="section container reward-teaser">
-        <Reveal as="p" className="eyebrow">
-          You donate. You will be rewarded big times.
-        </Reveal>
-        <Reveal as="h2" className="reward-teaser-title">
-          Every gift builds the armour.
+      {/* ---------- 6 · Donation: title, rooms, button ---------- */}
+      <section id="rewards" className="section container reward-teaser tight-top">
+        <Reveal className="callout">
+          <h2 className="callout-title">{HOME_DONATE.title}</h2>
+          <div className="callout-copy">
+            <p>{HOME_DONATE.sub}</p>
+          </div>
         </Reveal>
 
         <div className="tier-grid">
@@ -170,49 +176,79 @@ export default function Home() {
           ))}
         </div>
 
+        <Reveal as="p" className="reward-teaser-note">
+          {HOME_DONATE.afterTiers}
+        </Reveal>
+
         <Reveal className="reward-teaser-cta">
-          <Link href="/rewards" className="btn btn-dark btn-lg">
-            Select a reward
+          <Link href={HOME_DONATE.button.href} className="btn btn-dark btn-lg">
+            {HOME_DONATE.button.label}
           </Link>
         </Reveal>
       </section>
 
-      {/* ---------- 7 · The moving line ---------- */}
+      {/* ---------- 7 · The moving bar ---------- */}
       <div className="marquee" aria-hidden="true">
         <div className="marquee-track">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span className="marquee-item" key={i}>
-              {MARQUEE_LINE}
-              <span className="marquee-dot" />
-            </span>
-          ))}
+          {Array.from({ length: 6 }).flatMap((_, n) =>
+            MARQUEE_ITEMS.map((item, i) => (
+              <span className="marquee-item" key={`${n}-${i}`}>
+                {item}
+                <span className="marquee-star">✦</span>
+              </span>
+            ))
+          )}
         </div>
       </div>
 
       {/* ---------- 8 · A seat inside the process ---------- */}
       <section className="section container seat">
-        <Reveal as="h2" className="section-title">
-          {HOME_SEAT.title}
-        </Reveal>
-        <div className="seat-grid">
-          {HOME_SEAT.items.map((it, i) => (
-            <Reveal className="seat-item" key={it} delay={i * 70}>
-              <Target rings={i + 1} size={54} filledCenter strokeRatio={0.5} />
-              <p>{it}</p>
+        <div className="seat-layout">
+          <div className="seat-text">
+            <Reveal as="h2" className="section-title">
+              {HOME_SEAT.title}
             </Reveal>
-          ))}
+            <ul className="seat-list">
+              {HOME_SEAT.items.map((it, i) => (
+                <Reveal as="li" className="seat-item" key={it.lead} delay={i * 70}>
+                  <Target rings={i + 1} size={44} filledCenter strokeRatio={0.5} />
+                  <p>
+                    <strong>{it.lead}</strong> {it.body}
+                  </p>
+                </Reveal>
+              ))}
+            </ul>
+            <Reveal as="p" className="seat-close" delay={120}>
+              {HOME_SEAT.close}
+            </Reveal>
+          </div>
+          <Reveal className="seat-media" delay={120}>
+            <figure className="media">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={HOME_SEAT.src} alt={HOME_SEAT.alt} loading="lazy" />
+            </figure>
+          </Reveal>
         </div>
-        <Reveal as="p" className="article-statement" delay={120}>
-          {HOME_SEAT.close}
-        </Reveal>
       </section>
 
-      {/* ---------- 9 · What you might be thinking ---------- */}
+      {/* ---------- 9 · Landscape picture (once Niki sends it) ---------- */}
+      {HOME_LANDSCAPE.src && (
+        <section className="container home-landscape">
+          <Reveal>
+            <figure className="media">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={HOME_LANDSCAPE.src} alt={HOME_LANDSCAPE.alt} loading="lazy" />
+            </figure>
+          </Reveal>
+        </section>
+      )}
+
+      {/* ---------- 10 · You might be wondering ---------- */}
       <section className="section container objections">
         <Reveal as="h2" className="section-title">
-          What you might be thinking
+          {HOME_OBJECTIONS_TITLE}
         </Reveal>
-        <Reveal as="dl" className="faq">
+        <Reveal as="dl" className="faq faq-2col">
           {HOME_OBJECTIONS.map((o) => (
             <div className="faq-item" key={o.q}>
               <dt>{o.q}</dt>
@@ -220,12 +256,9 @@ export default function Home() {
             </div>
           ))}
         </Reveal>
-        <Reveal as="blockquote" className="article-quote" delay={100}>
-          <span>{HOME_PULLQUOTE}</span>
-        </Reveal>
       </section>
 
-      {/* ---------- 10 · KOIK Contemporary ---------- */}
+      {/* ---------- 11 · KOIK Contemporary ---------- */}
       <section className="section container">
         <Reveal className="image-quote is-flipped">
           <figure className="media">
@@ -234,15 +267,19 @@ export default function Home() {
           </figure>
           <div className="image-quote-text">
             <p className="image-quote-quote">{HOME_KOIK.quote}</p>
-            <p className="image-quote-body">{HOME_KOIK.body}</p>
-            <p className="image-quote-body">{HOME_KOIK.extra}</p>
+            {HOME_KOIK.body.map((p) => (
+              <p className="image-quote-body" key={p}>
+                {p}
+              </p>
+            ))}
           </div>
         </Reveal>
       </section>
 
-      {/* ---------- 11 · Close ---------- */}
+      {/* ---------- 12 · Close ---------- */}
       <section className="section container home-close">
         <Reveal className="home-close-inner">
+          <h2 className="home-close-title">{HOME_CLOSE.title}</h2>
           {HOME_CLOSE.lines.map((l) => (
             <p className="home-close-line" key={l}>
               {l}
@@ -251,11 +288,11 @@ export default function Home() {
           <p className="home-close-statement">{HOME_CLOSE.statement}</p>
           <p className="article-signature">{HOME_CLOSE.signature}</p>
           <div className="step-actions center">
-            <Link href="/donate" className="btn btn-primary btn-lg">
-              {CAMPAIGN.callToAction}
+            <Link href={HOME_CLOSE.primary.href} className="btn btn-primary btn-lg">
+              {HOME_CLOSE.primary.label}
             </Link>
-            <Link href="/where-the-money-goes" className="btn btn-ghost btn-lg">
-              Where the money goes
+            <Link href={HOME_CLOSE.secondary.href} className="btn btn-ghost btn-lg">
+              {HOME_CLOSE.secondary.label}
             </Link>
           </div>
         </Reveal>

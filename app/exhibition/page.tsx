@@ -10,12 +10,12 @@ export default function ExhibitionPage() {
       <Article blocks={EXHIBITION} editorial />
       <div className="container editorial">
         <div className="article-cta">
-        <Link href="/donate" className="btn btn-primary btn-lg">
-          Fund the room
-        </Link>
-        <Link href="/where-the-money-goes" className="btn btn-ghost btn-lg">
-          Where the money goes
-        </Link>
+          <Link href="/donate" className="btn btn-primary btn-lg">
+            Help build the room
+          </Link>
+          <Link href="/academy" className="btn btn-ghost btn-lg">
+            Join the Knight Academy
+          </Link>
         </div>
       </div>
     </main>

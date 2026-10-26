@@ -13,13 +13,11 @@ export const CAMPAIGN = {
   title: "The Dressing Room of a Female Knight",
   artist: "Niki",
   venue: "KOIK Contemporary, Mexico City",
-  opens: "5 December 2026",
-  runsThrough: "February 2027",
-  travelsTo: "the Netherlands, spring 2027",
+  opens: "6 March 2027",
   goalEuros: 25000, // Briefing: "I'm raising €25.000 to build it right."
   raisedEuros: 6400, // placeholder progress — wire to real data later
   backers: 58, // placeholder
-  callToAction: "Bring me your juice",
+  callToAction: "Become a fellow knight",
   monthlyMonths: 5, // Briefing: "MONTHLY (5 months)"
 };
 
@@ -32,9 +30,6 @@ export const CAMPAIGN = {
 export const DONORBOX = {
   campaign: "",
 };
-
-/** The single line that runs across the home page. */
-export const MARQUEE_LINE = "BIG NEWS. THE ARMOUR IS BEING FORGED.";
 
 /** Poetic slogans from the story (used on the rewards + academy pages). */
 export const SLOGANS = [
@@ -59,9 +54,9 @@ export const SLOGANS = [
  */
 export const DIANA_RINGS = [
   { label: "blanc", href: "/rewards/open-field" },
-  { label: "750", href: "/rewards/round-table" },
-  { label: "250", href: "/rewards/dressing-room" },
-  { label: "50", href: "/rewards/class-room" },
+  { label: "€750,-", href: "/rewards/round-table" },
+  { label: "€250,-", href: "/rewards/dressing-room" },
+  { label: "€50,-", href: "/rewards/class-room" },
   { label: "rewards", href: "/rewards" },
 ];
 
@@ -255,7 +250,7 @@ export const REWARDS: Reward[] = [
     id: "class-room",
     slug: "class-room",
     name: "The Class Room",
-    price: "€50 or more",
+    price: "€50,- or more",
     min: 50,
     tagline: "Some of us were never made for a small life.",
     body: "Unlimited access to the classroom in which I teach my most profound knight teachings. All of them, as I make them — the research, the rituals, the process, live.",
@@ -350,7 +345,7 @@ export const REWARDS: Reward[] = [
     id: "dressing-room",
     slug: "dressing-room",
     name: "The Dressing Room",
-    price: "€250 or more",
+    price: "€250,- or more",
     min: 250,
     tagline: "Meet the knight already standing in you.",
     body: "A 1:1 Knight Discovery Session. Ninety minutes to uncover your own inner knight: your calling, your armour, your sword, your banner — and the rituals that carry them.",
@@ -446,7 +441,7 @@ export const REWARDS: Reward[] = [
     id: "round-table",
     slug: "round-table",
     name: "The Round Table",
-    price: "€750 or more",
+    price: "€750,- or more",
     min: 750,
     tagline: "You no longer have to be a solo knight.",
     body: "A seat at the round table. Two Knight Nights, two countries, two kinds of power — where the most powerful truths of female knighthood get shared out loud.",
@@ -489,7 +484,7 @@ export const REWARDS: Reward[] = [
         paras: [
           "We eat. We drink. We talk about knighthood — legacy, calling, banners, conviction, ritual, the sword. Not to network. Not to perform.",
           "Each Night is an artistic initiation into knighthood. Two nights. Two countries. Two kinds of power.",
-          "Mexico City — 4 December. The night before the exhibition opens. A secret table. A closed door. This is the night you are dubbed — the old way. A hand, a blade, a shoulder, a title given out loud, in front of witnesses who will remember it happened. You arrive at the table one thing. You leave it another. The next morning, the doors of the exhibition open. You'll already be a knight when you walk through them.",
+          "Mexico City — 5 March. The night before the exhibition opens. A secret table. A closed door. This is the night you are dubbed — the old way. A hand, a blade, a shoulder, a title given out loud, in front of witnesses who will remember it happened. You arrive at the table one thing. You leave it another. The next morning, the doors of the exhibition open. You'll already be a knight when you walk through them.",
           "The Netherlands. A table joined by a woman who is, officially, a knight — geridderd, sword and all, no metaphor required. She sits across from the version of knighthood we're building for ourselves, and answers, honestly, what it costs and what it carries.",
           "You no longer have to be a solo knight. You just have to show up to the table.",
         ],
@@ -651,20 +646,61 @@ export type Block =
       flip?: boolean;
     }
   | { type: "faq"; items: { q: string; a: ReactNode }[] }
-  | { type: "signature"; text: string };
+  | { type: "signature"; text: string }
+  /** A "Go to … →" link, e.g. at the end of a home disclosure. */
+  | { type: "more"; label: string; href: string };
 
 /* ───────────────────────── HOME ───────────────────────── */
+/* Texts: Niki's final input "HOME" (October 2026). */
 
-export const HOME_INTRO_1 = [
-  "This year, I become a knight. Not a costume. A calling.",
-  "I'm building the room where she prepares — and the room where she lays the armour down again. Eight makers. One world. Opening at KOIK Contemporary, Mexico City.",
-  "I'm raising €25.000 to build it right. Not to ask permission. To build the room. The first solo exhibition of my life.",
+/** Replaces "Studio Niki" in letters above the big title. */
+export const HOME_TOPLINE =
+  "My first solo exhibition · Opening 6 March 2027 · Mexico City";
+
+export const HOME_SHOUT = "BIG NEWS. THE ARMOUR IS BEING FORGED.";
+
+export const HOME_INTRO_1: ReactNode[] = [
+  <>
+    This year, I become a knight.
+    <br />
+    Not a costume. A calling.
+  </>,
+  <>
+    For fifteen years, I built other people&rsquo;s worlds. Now I&rsquo;m
+    building my own: the room where a female knight prepares for what
+    she&rsquo;s here to do. Where she&rsquo;s afraid, gathers herself and
+    chooses what to carry. And where, afterwards, she lays the armour down.
+  </>,
+  <>
+    Eight makers. Eight new works. One room.
+    <br />
+    Opening at KOIK Contemporary, Mexico City.
+  </>,
+  <>
+    I&rsquo;m raising €25.000 to build it right.
+    <br />
+    Not to ask permission. To build the room.
+  </>,
 ];
 
-export const HOME_INTRO_2 =
-  "If you've ever felt a calling you couldn't fully explain. Not the loud kind. The quiet kind. The one that doesn't leave, no matter how many times you reason it back into silence. This is for you too.";
+export const HOME_ACTIONS = {
+  primary: { label: "Become a fellow knight", href: "/donate" },
+  secondary: { label: "Enter the dressing room", href: "/exhibition" },
+};
 
-/** Home → My story: the teaser, then the full thing behind a disclosure. */
+/** The line that sits above the funding bar. */
+export const HOME_SCALE_LINE = "The armour, piece by piece.";
+
+/** Intro text 2 — centred, bold. */
+export const HOME_INTRO_2 = {
+  title: "This is for your boldest calling.",
+  paras: [
+    "For anyone who has known something before they could prove it. The calling you can’t fully explain. The one that won’t leave, however many times you reason it back into silence.",
+    "You don’t need a sword. Or a title. Or permission. If something in you recognises itself here, you’re already in the room.",
+  ],
+};
+
+/** Home → My story: the teaser, then the rest behind a disclosure. */
 export const HOME_STORY: Block[] = [
   { type: "kicker", text: "My story" },
   {
@@ -672,10 +708,18 @@ export const HOME_STORY: Block[] = [
     node: (
       <>
         2025 was the hardest year of my life. My body collapsed. My spirit
-        followed. I let go of Toffey, the campaign studio I built from scratch.
-        Let go of Human Rights Tattoo, the project that took a decade of my life
-        and travelled the world. Let go of the Netherlands, my income, my
-        identity. Everything asked for rest. So I listened.
+        followed. I let go of Toffey, the studio I built from scratch. Of Human
+        Rights Tattoo, a decade of my life. Of my income, my identity, and the
+        person I thought I was supposed to be.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Then I found Jeanne d&rsquo;Arc. Seventeen. No title. No army. She
+        believed herself before anyone else did.
       </>
     ),
   },
@@ -687,67 +731,30 @@ export const HOME_STORY: Block[] = [
         type: "p",
         node: (
           <>
-            I discovered Mexico City. I worked as a chef. I cooked, I painted, I
-            learned to VJ. I stripped myself down to the studs and let something
-            else come up in the space that opened.
-          </>
-        ),
-      },
-      {
-        type: "p",
-        node: (
-          <>
-            Along the way, I went looking for a new source of strength. I studied
-            epic women — the fictional and the real, the fierce and the quiet.
-            And I kept circling back to one: Jeanne d&rsquo;Arc. Seventeen. No
-            education, no title, no army of her own. She still walked into a
-            royal court and told a king she&rsquo;d been sent to crown him. What
-            moves me isn&rsquo;t the hero myth. It&rsquo;s her radical inner
-            conviction — she acted on something she knew, whether or not the
-            world made space for it.
-          </>
-        ),
-      },
-      { type: "statement", text: "Deeply feminine. Deeply powerful. Both, at once." },
-      {
-        type: "p",
-        node: (
-          <>
-            I started imagining a room I&rsquo;d never seen anywhere: not the
-            battlefield, but the space before and after it. The dressing room.
-            Where a knight puts the armour on — or takes it off.
-          </>
-        ),
-      },
-      { type: "image", src: IMG.armour, alt: "The armour, being forged" },
-      {
-        type: "p",
-        node: (
-          <>
             For fifteen years, I lent my voice to other people&rsquo;s missions.
-            To Human Rights Tattoo. To the clients of Toffey. That work taught me
-            everything about giving an idea its full shape. It also let me hide.
             Behind a client&rsquo;s name, I was safe. Behind my own name,
             I&rsquo;m not.
           </>
         ),
       },
       { type: "statement", text: "This is the moment I stop hiding." },
+      { type: "more", label: "Go to my story", href: "/story" },
     ],
   },
 ];
 
 export const HOME_EXHIBITION: Block[] = [
   { type: "kicker", text: "The exhibition" },
+  { type: "lead", node: <>Not the battlefield. The room before it.</> },
   {
-    type: "lead",
+    type: "p",
     node: (
       <>
-        On March 12, 2026, Lester Aguirre — founder and curator of KOIK
-        Contemporary in Mexico City — invited me for a residency and a solo
-        exhibition. <strong>The Dressing Room of a Female Knight</strong> is a
-        spatial exhibition — armour, banner, ritual, horse, dressing room,
-        conviction — reimagined for a knight of now.
+        <em>The Dressing Room of a Female Knight</em> is a room you walk into.
+        Armour, garments, photography, video, projection, banners, words, sound
+        and ritual. Eight works, each made with a different maker. A place to
+        meet the woman you might become if you took your own imagination
+        seriously.
       </>
     ),
   },
@@ -759,132 +766,127 @@ export const HOME_EXHIBITION: Block[] = [
         type: "p",
         node: (
           <>
-            Not an open call. A personal invitation, to an artist he&rsquo;d been
-            watching before I called myself one out loud.
+            Opening <strong>6 March 2027</strong> at KOIK Contemporary, Mexico
+            City. Five billboards across the city carry the banner into the
+            streets. Then the room travels to the Netherlands.
           </>
         ),
       },
-      {
-        type: "p",
-        node: (
-          <>
-            This year, I become a knight. Not to fight. To answer a mission I
-            can&rsquo;t fully explain — and refuse to shrink to make it more
-            believable.
-          </>
-        ),
-      },
-      { type: "h2", text: "Eight new works. Eight makers. One world, built together." },
-      {
-        type: "list",
-        items: [
-          <>
-            <strong>Photographic series</strong> — a female reinterpretation of
-            the four knights of the tarot, with photographer Diego Guadarrama
-          </>,
-          <>
-            <strong>VJ work</strong>, with visual artist/architect Erik López
-          </>,
-          <>
-            <strong>Video work</strong>, with visual storyteller Armando Juarez
-          </>,
-          <>
-            <strong>Poster wall</strong>, with graphic designer Olivier van
-            Zummeren
-          </>,
-          <>
-            <strong>Floor text / word art</strong>, with poet Loes van Rooij
-          </>,
-          <>
-            <strong>Banners</strong> — a contemporary translation of Jeanne
-            d&rsquo;Arc&rsquo;s own banner, which she carried closer than her
-            sword — also shown as five billboard works across Mexico City, made
-            possible by Publimex
-          </>,
-          <>
-            <strong>Dressing room installation</strong>, including garments, with
-            fashion designer Gabrielle Venguer
-          </>,
-          <>
-            <strong>Performance / ritual</strong>, with music by producer Edgar
-            Mondragón and somatic guidance from Dolores Hoppener Mae
-          </>,
-        ],
-      },
-      { type: "image", src: IMG.room, alt: "The dressing room installation" },
-      {
-        type: "p",
-        node: (
-          <>
-            The exhibition opens at KOIK Contemporary on{" "}
-            <strong>5 December 2026</strong>, runs through{" "}
-            <strong>February 2027</strong>, and travels to the Netherlands in
-            spring 2027 — bringing the two worlds I live and work between finally
-            into one room.
-          </>
-        ),
-      },
-      {
-        type: "quote",
-        text: "Your gift funds the raw material of this: production, materials, and fair pay for eight collaborators building something that doesn't exist yet.",
-      },
+      { type: "more", label: "Go to the exhibition", href: "/exhibition" },
     ],
   },
 ];
 
 export const HOME_TRUST = {
   quote: "Why trust the hands building this?",
-  body: "I've done this before — just never fully in my own name.",
+  body: [
+    "I’ve done this before. Just never in my own name.",
+    "For ten years, I co-led Human Rights Tattoo: the Universal Declaration of Human Rights, tattooed letter by letter onto 6,773 people worldwide. I held its artistic direction from Tilburg to museums in China, Mexico and France. It won the Red Dot Grand Prix.",
+    "For nearly a decade, I was artistic lead of Toffey, building worlds for Kunstbende, the Textielmuseum, Zuidelijk Toneel and Roadburn. I gave Doloris its name, and Toffey built the brand around it. It grew into an international art maze.",
+    "I know how to find an idea’s hidden wiring, gather the right makers and build something people walk into and feel.",
+    "A solo exhibition doesn’t mean a solitary act. I set the vision. Eight makers bring their own language. Together, we build the room.",
+  ],
   src: IMG.portrait,
   alt: "Niki in the studio",
 };
 
+/** Donation title — same centred, bold design as intro text 2. */
+export const HOME_DONATE = {
+  title: "You help me become a knight. I help you become yours.",
+  sub: "Every gift builds the armour.",
+  afterTiers: "Every door you open, you keep.",
+  button: { label: "Choose where you belong", href: "/rewards" },
+};
+
+/** The moving bar. */
+export const MARQUEE_ITEMS = [
+  "Bring me bigness",
+  "Every gift builds the armour",
+  "Opening 6 March 2027",
+];
+
 export const HOME_SEAT = {
   title: "Not a donation into a void. A seat inside the process.",
   items: [
-    "You watch a world get built, in real time.",
-    "You become part of a lineage. The Knight Academy is where I share the research, the rituals, and the teachings behind this work as they happen.",
-    "You get access most people won't — to the room, the class room, the round tables, and eventually, the finished work itself.",
+    {
+      lead: "You’re there while it happens.",
+      body: "The research, the experiments, the rituals, the doubts, the decisions. Everything that usually happens behind closed doors, before the lights come on.",
+    },
+    {
+      lead: "You enter the Knight Academy.",
+      body: "Study the women who went into battle before you. Walk through the seven doorways. Decide what you’re willing to stand up for.",
+    },
+    {
+      lead: "You fund the real thing.",
+      body: "Production, materials and fair pay for eight makers. Not the cheaper version. The work as it deserves to be made.",
+    },
   ],
-  close: "This isn't charity. It's an invitation to build something unmistakable, together.",
+  close: "You fund an exhibition. You inherit a quest.",
+  // Placeholder until Niki's new photos arrive.
+  src: IMG.armourOrnate,
+  alt: "The armour",
 };
 
-export const HOME_OBJECTIONS = [
+/** Wide picture between the donation part and the questions.
+ *  Empty until Niki delivers a landscape photo — the slot hides itself. */
+export const HOME_LANDSCAPE = { src: "", alt: "" };
+
+export const HOME_OBJECTIONS_TITLE = "You might be wondering";
+
+export const HOME_OBJECTIONS: { q: string; a: ReactNode }[] = [
   {
-    q: "You might be thinking I don't know anything about knights nor art.",
-    a: "Neither did the seventeen-year-old who crowned a king. This isn't a history lesson. It's a living practice — you don't need credentials to recognise a calling when you feel one.",
+    q: "“Why are you doing this?”",
+    a: "Because I have to. For fifteen years, I made others visible. Now I’m completing a transformation: deeply feminine, deeply powerful, both at once. And I’m doing it for everyone who suspects they weren’t made for a small life either.",
   },
   {
-    q: "This feels very personal — is it for me?",
-    a: "It's for anyone who's ever carried a mission. Some part of you already knows: this is not a small life. If that's you, you're already in the room.",
+    q: "“I’m not a woman. Is this for me?”",
+    a: "Absolutely. Female knighthood isn’t about gender. It’s about a calling that takes you somewhere no path was laid. It isn’t inherited through birth or title. You answer it through conviction. The calling is yours to answer.",
+  },
+  {
+    q: "“I don’t know anything about knights. Or art.”",
+    a: "Neither did the seventeen-year-old who walked into a royal court and told a king what she’d come to do. This isn’t a history lesson. It’s a living practice.",
+  },
+  {
+    q: "“What if nobody believes in it?”",
+    a: (
+      <>
+        They don&rsquo;t have to.
+        <br />
+        I&rsquo;ll build it anyway.
+        <br />
+        But I&rsquo;d love you inside.
+      </>
+    ),
   },
 ];
 
-export const HOME_PULLQUOTE =
-  "What moves me isn't the hero story. It's that she believed herself before anybody else did.";
-
 export const HOME_KOIK = {
-  quote: "I didn't apply. I was asked.",
-  body: "KOIK Contemporary isn't a commercial gallery. It's an independent, research-driven platform — invitation-only, chosen for artists whose work matches its profile.",
-  extra:
-    "I know how ideas grow, how an audience forms, and how a vision becomes a room people walk into and feel. I've just never done it for myself before. Now I am.",
+  quote: "I didn’t apply. I was asked.",
+  body: [
+    "On 12 March 2026, Lester Aguirre, founder and curator of KOIK Contemporary, invited me for a three-month residency and my first solo exhibition in Mexico City. It wasn’t an open call. It was a personal invitation, to an artist he saw before I dared to call myself one out loud.",
+    "KOIK isn’t a commercial gallery. It’s an independent, research-driven platform for experimental work, and you can only get in by invitation.",
+    "Someone saw the knight before I did. Now it’s my turn.",
+  ],
   src: IMG.mexico,
   alt: "KOIK Contemporary, Mexico City",
 };
 
 export const HOME_CLOSE = {
+  title: "This is your invitation.",
   lines: [
-    "I trust 2026. I trust timing. I trust my fellow knight.",
-    "This is the year I am inviting you into my world.",
+    "You don’t have to wait for the doors to open. You can help build the room now. And when they open, you’ll know part of that armour is yours.",
+    "I trust 2026. I trust timing. I trust my fellow knights.",
   ],
   statement: "Help me build the room. Then step into your own.",
   signature: "🖤 Niki",
+  primary: { label: "Enter knighthood", href: "/donate" },
+  secondary: { label: "Where the money goes", href: "/where-the-money-goes" },
 };
 
 /* ───────────────────────── MY STORY ───────────────────────── */
 export const STORY: Block[] = [
   { type: "kicker", text: "Big news. The armour is being forged." },
-  { type: "title", text: "The dressing room of a female knight" },
+  { type: "title", text: "The Dressing Room of a Female Knight" },
   {
     type: "lead",
     node: (
@@ -910,11 +912,27 @@ export const STORY: Block[] = [
     type: "p",
     node: (
       <>
-        2025 was the hardest year of my life. My body collapsed. My spirit
-        followed. I let go of Toffey, the campaign studio I built from scratch.
-        Let go of Human Rights Tattoo, the project that took a decade of my life
-        and travelled the world. Let go of the Netherlands, my income, my
-        identity. Everything asked for rest. So I listened.
+        <strong>
+          2025 was the hardest year of my life.
+          <br />
+          My body collapsed. My spirit followed.
+        </strong>
+        <br />
+        It had been coming for a while. I had let go of Toffey, the campaign
+        studio I built from scratch. Of Human Rights Tattoo, the project that
+        took a decade of my life and travelled the world. Of my income, my
+        identity, and the person I thought I was supposed to be.
+      </>
+    ),
+  },
+  { type: "p", node: <>Everything was asking me to stop.</> },
+  { type: "p", node: <>So I stopped.</> },
+  {
+    type: "p",
+    node: (
+      <>
+        It got dark. Very dark. I lost my lust for life. And somewhere in the
+        space where my old life had been, something unexpected started growing.
       </>
     ),
   },
@@ -922,9 +940,8 @@ export const STORY: Block[] = [
     type: "p",
     node: (
       <>
-        I discovered Mexico City. I worked as a chef. I cooked, I painted, I
-        learned to VJ. I stripped myself down to the studs and let something else
-        come up in the space that opened.
+        My brother gave me a job in a kitchen. I started painting. I learned to
+        VJ. I returned to Mexico City. I went looking for a new source of power.
       </>
     ),
   },
@@ -932,25 +949,60 @@ export const STORY: Block[] = [
     type: "p",
     node: (
       <>
-        Along the way, I went looking for a new source of strength. I studied epic
-        women — the fictional and the real, the fierce and the quiet. And I kept
-        circling back to one: Jeanne d&rsquo;Arc. Seventeen. No education, no
-        title, no army of her own. She still walked into a royal court and told a
-        king she&rsquo;d been sent to crown him. What moves me isn&rsquo;t the
-        hero myth. It&rsquo;s her radical inner conviction — she acted on
-        something she knew, whether or not the world made space for it.
+        I found it in women who lived epic lives. The real ones. The fictional
+        ones. The fierce ones. The strange ones. Women who refused to become
+        smaller to make the world more comfortable.
       </>
     ),
   },
+  { type: "p", node: <>And then there was Jeanne d&rsquo;Arc.</> },
+  {
+    type: "p",
+    node: (
+      <>
+        Seventeen years old. No title. No education. No army of her own. She
+        walked into a royal court and told a king what she had come to do.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        What moves me isn&rsquo;t the hero story. It&rsquo;s her radical inner
+        conviction.
+      </>
+    ),
+  },
+  { type: "p", node: <>She believed herself before anyone else did.</> },
   { type: "statement", text: "Deeply feminine. Deeply powerful. Both, at once." },
-  { type: "target" },
   {
     type: "p",
     node: (
       <>
-        I started imagining a room I&rsquo;d never seen anywhere: not the
-        battlefield, but the space before and after it. The dressing room. Where
-        a knight puts the armour on — or takes it off.
+        I became obsessed with one moment. The moment you know what you have to
+        do, but the world hasn&rsquo;t caught up with you yet.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        And I started imagining a room I&rsquo;d never seen. Not the
+        battlefield. Not the victory portrait. Not the triumphant woman holding
+        up her sword while everyone applauds.
+      </>
+    ),
+  },
+  { type: "p", node: <>The room before.</> },
+  {
+    type: "p",
+    node: (
+      <>
+        The dressing room of a female knight. Where she prepares. Where she is
+        still herself, still uncertain, still human. Where she chooses what to
+        carry. And where, afterwards, she can take the armour off again.
       </>
     ),
   },
@@ -959,16 +1011,19 @@ export const STORY: Block[] = [
     type: "quote",
     text: "For fifteen years, I lent my voice to other people's missions. Behind a client's name, I was safe. Behind my own name, I'm not. This is the moment I stop hiding.",
   },
-  { type: "h2", text: "Why trust the hands building this" },
+  { type: "h2", text: "Playing it safe rarely leaves a mark." },
   {
     type: "p",
     node: (
       <>
-        I co-founded <strong>Human Rights Tattoo</strong>, a decade-long global
-        art project that tattooed the full Universal Declaration of Human Rights,
-        letter by letter, on 6.773 people worldwide. It won the Red Dot Design
-        Award and the Red Dot Grand Prix, and travelled to museums in China,
-        Mexico and France.
+        <strong>
+          I&rsquo;m Niki. (Brand) artist, knight, entrepreneur.
+          <br />
+          Artist&rsquo;s soul. Chess-player mind.
+        </strong>
+        <br />
+        For fifteen years, I built brands, projects and creative worlds for
+        others. Now I&rsquo;m building my own.
       </>
     ),
   },
@@ -976,29 +1031,83 @@ export const STORY: Block[] = [
     type: "p",
     node: (
       <>
-        I know how ideas grow, how an audience forms, and how a vision becomes a
-        room people walk into and feel. I&rsquo;ve just never done it for myself
-        before. Now I am.
+        I love the blank canvas. I like ideas with scale, colour, feeling and a
+        little bit of nerve. I build worlds through words, images, moving
+        pictures, rituals, billboards, objects, and the people who know how to
+        bring them to life.
       </>
     ),
   },
-  { type: "signature", text: "🖤 Niki — The dot says it all." },
+  {
+    type: "p",
+    node: (
+      <>
+        I don&rsquo;t work alone. I bring the right constellation of makers
+        together around an idea, then give that idea its fullest possible form.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        <em>The Dressing Room of a Female Knight</em> is where all of that comes
+        together. Fifteen years of building rooms for others. Finally, one of my
+        own.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>A personal experiment in what happens when you stop waiting to feel ready.</>
+    ),
+  },
+  { type: "p", node: <>I&rsquo;m scared.</> },
+  { type: "p", node: <>I&rsquo;m doing it anyway.</> },
+  { type: "signature", text: "🖤 Niki" },
 ];
 
 /* ───────────────────────── EXHIBITION ───────────────────────── */
 export const EXHIBITION: Block[] = [
   { type: "kicker", text: "The exhibition" },
+  { type: "title", text: "Eight new works. One room." },
+  { type: "lead", node: <>Not a costume. A world on its own.</> },
   {
-    type: "title",
-    text: "Eight new works. Eight makers. One world, built together.",
-  },
-  {
-    type: "lead",
+    type: "p",
     node: (
       <>
-        On March 12, 2026, Lester Aguirre — founder and curator of KOIK
-        Contemporary in Mexico City — invited me for a residency and a solo
-        exhibition. Not an open call. A personal invitation, to an artist
+        On <strong>6 March 2027</strong>,{" "}
+        <em>The Dressing Room of a Female Knight</em> opens at KOIK Contemporary
+        in Mexico City.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        The Dressing Room is a spatial exhibition. A room you enter. A universe
+        of armour, garments, photography, video, projections, banners, words,
+        sound and ritual. A place to encounter the woman you might become if you
+        took your own imagination seriously.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        The invitation came from Lester Aguirre, founder and curator of KOIK
+        Contemporary, one of the most brilliant contemporary art spaces in CDMX.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Not an open call. Not an application. A personal invitation to an artist
         he&rsquo;d been watching before I called myself one out loud.
       </>
     ),
@@ -1007,66 +1116,178 @@ export const EXHIBITION: Block[] = [
     type: "p",
     node: (
       <>
-        <strong>The Dressing Room of a Female Knight</strong> is a spatial
-        exhibition — armour, banner, ritual, horse, dressing room, conviction —
-        reimagined for a knight of now. Not a historical costume. A contemporary
-        practice.
+        I said yes. Three months of residency. One solo exhibition.
+        <br />
+        My coming out. As an artist. As a knight.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: <strong>What happens when an advertiser reinvents herself as an artist?</strong>,
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        For fifteen years, I built worlds for others. Brands. Campaigns. Other
+        people&rsquo;s missions. Behind a client, I never had to stand in front.
+        This time, there&rsquo;s no one to hide behind.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        So I&rsquo;m building a room I&rsquo;ve never seen, but have imagined for
+        years. The space behind the stage. Where the star gets ready. Where the
+        knight prepares for battle. No masks. The place where a calling takes
+        shape. Grows firm. Becomes real.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        A lifetime of obsessions, finally in one room. Epic women. The catwalk.
+        The battlefield. Giants. Billboards. Bathing. Rituals. Cheerleaders.
+        Devotion.
       </>
     ),
   },
   { type: "image", src: IMG.room, alt: "The dressing room installation" },
   { type: "h2", text: "The eight works" },
   {
+    type: "p",
+    node: (
+      <strong>
+        A solo exhibition doesn&rsquo;t mean a solitary act. I set the vision. I
+        bring the right makers together. Each brings a language of their own.
+        Together, we build the room. I am creating eight works.
+      </strong>
+    ),
+  },
+  {
     type: "list",
     items: [
       <>
-        <strong>Photographic series</strong> — a female reinterpretation of the
-        four knights of the tarot, with photographer Diego Guadarrama
+        <strong>01. The Knights, Reimagined</strong>
+        <br />
+        The four knights of the tarot, reimagined as women. Real women. Epic
+        presence. Photography with visual storyteller Armando Juarez.
       </>,
       <>
-        <strong>VJ work</strong>, with visual artist/architect Erik López
+        <strong>02. The Mirror</strong>
+        <br />
+        Reflection, light and moving image. VJ work with visual artist and
+        architect Erik López. The familiar becomes less certain.
       </>,
       <>
-        <strong>Video work</strong>, with visual storyteller Armando Juarez
+        <strong>03. Apotheosis</strong>
+        <br />A video about becoming. The fun and struggle of finding your sword
+        and armour.
       </>,
       <>
-        <strong>Poster wall</strong>, with graphic designer Olivier van Zummeren
+        <strong>04. The Wall of Words</strong>
+        <br />
+        Posters, floor text, word art. With graphic designer Olivier van
+        Zummeren and poet Loes van Rooij. Sometimes words don&rsquo;t explain a
+        feeling. They unlock it.
       </>,
       <>
-        <strong>Floor text / word art</strong>, with poet Loes van Rooij
+        <strong>05. The Banner</strong>
+        <br />
+        Jeanne d&rsquo;Arc carried her banner closer than her sword. A
+        contemporary translation, also brought onto five billboards across
+        Mexico City, made possible by Publimex.
       </>,
       <>
-        <strong>Banners</strong> — a contemporary translation of Jeanne
-        d&rsquo;Arc&rsquo;s own banner, which she carried closer than her sword —
-        also shown as five billboard works across Mexico City, made possible by
-        Publimex
+        <strong>06. The Altar</strong>
+        <br />
+        Armour. Sword. Garments. Where high fashion meets power. Where wigs
+        become an altar.
       </>,
       <>
-        <strong>Dressing room installation</strong>, including garments, with
-        fashion designer Gabrielle Venguer
+        <strong>07. The Ritual</strong>
+        <br />A bath. An accolade. A sword laid on the shoulder, marking the
+        passage into a new identity.
       </>,
       <>
-        <strong>Performance / ritual</strong>, with music by producer Edgar
-        Mondragón and somatic guidance from Dolores Hoppener Mae
+        <strong>08. The Knights Cheer</strong>
+        <br />A battle cry. A toast. A sermon. Preach. Words by my sister, poet
+        Loes van Rooij.
       </>,
     ],
   },
-  { type: "target" },
   {
     type: "p",
     node: (
       <>
-        The exhibition opens at KOIK Contemporary on{" "}
-        <strong>5 December 2026</strong>, runs through{" "}
-        <strong>February 2027</strong>, and travels to the Netherlands in spring
-        2027 — bringing the two worlds I live and work between finally into one
-        room.
+        A dressing room is a strange and wonderful place. Intimate. Private.
+        Sometimes ridiculous. A place for wigs, weapons, nerves, lipstick, prayer
+        and last-minute existential crises. Where you take everything off before
+        deciding what to put on.
       </>
     ),
   },
   {
+    type: "p",
+    node: (
+      <>
+        Where you prepare to be seen. And are allowed, for a moment, not to be.
+      </>
+    ),
+  },
+  { type: "p", node: <>Sacred. Kitsch. Vulnerable and intimidating.</> },
+  {
+    type: "p",
+    node: (
+      <>
+        Picture a woman stepping out of a classical painting, stealing a rock
+        star&rsquo;s wardrobe, challenging the king, and looking spectacular
+        while doing it.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Here, femininity doesn&rsquo;t have to be pretty, agreeable or easy to
+        understand. Power can be extravagant. Vulnerability can have a
+        magnificent wardrobe.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        A lifetime of obsessions, finally at the same table. Epic women.
+        Catwalks. Battlefields. Giants. Rock stars. Cheerleaders. Altars.
+        Bathing. Devotion. And the delicious theatre of being alive.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        I want to build a room that gives form to the moment before becoming.
+        The charged, uncertain, gloriously private space between who you have
+        been and who you might dare to be.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: <>You choose the dress. You fasten the armour. You pick up the sword.</>,
+  },
+  {
     type: "quote",
-    text: "Your gift funds the raw material of this: production, materials, and fair pay for eight collaborators building something that doesn't exist yet.",
+    text: "A room that asks a question I have been asking myself for years: What would you become if you gave yourself permission to go all the way?",
   },
   {
     type: "images",
@@ -1075,19 +1296,75 @@ export const EXHIBITION: Block[] = [
       { src: IMG.mexico, alt: "The crowd the work is made for" },
     ],
   },
+  { type: "h2", text: "Why €25.000?" },
   {
-    type: "imageQuote",
-    src: IMG.poster,
-    alt: "KOIK Contemporary",
-    quote: "I didn't apply. I was asked.",
-    body: (
+    type: "lead",
+    node: <>Because ambition deserves more than a compromised version of itself.</>,
+  },
+  {
+    type: "p",
+    node: (
       <>
-        KOIK Contemporary isn&rsquo;t a commercial gallery. It&rsquo;s an
-        independent, research-driven platform — invitation-only, chosen for
-        artists whose work matches its profile.
+        Your contribution funds production, materials and fair pay for eight
+        makers. Not shrinking the idea until it&rsquo;s affordable. Not asking
+        the people who make it possible to work for less than they&rsquo;re
+        worth.
       </>
     ),
   },
+  {
+    type: "p",
+    node: (
+      <>
+        I&rsquo;m not raising money to ask whether this deserves to exist.
+        I&rsquo;m raising it to give it the room it needs.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        I have the invitation. I have the vision. I have gathered the makers.
+      </>
+    ),
+  },
+  { type: "p", node: <strong>Now I need you.</strong> },
+  {
+    type: "p",
+    node: (
+      <>
+        Help build a world where a woman is allowed to be extravagant in her
+        ambitions, strange in her beauty and entirely unreasonable about the
+        size of her dreams.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        You can watch a woman become a knight.
+        <br />
+        Or you can help build the room where it happens.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Step into the Knight Academy, where the research continues with everyone
+        who joins. A classroom. A dressing room. A round table. An open field.
+        Choose where you belong.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: <>I can&rsquo;t wait to give you a sword. A banner. A crown.</>,
+  },
+  { type: "signature", text: "🖤 Niki" },
 ];
 
 /* ───────────────────────── KNIGHT ACADEMY ───────────────────────── */
@@ -1101,9 +1378,24 @@ export const ACADEMY_INTRO: Block[] = [
     type: "lead",
     node: (
       <>
-        All year, one question followed me everywhere: what if we actually studied
-        the women who lived epic lives — and learned from them? Not as history. As
-        practice.
+        A thank-you that turns into a world of its own. A school for your
+        boldest calling. Because we are meant to live an epic life. Together.
+      </>
+    ),
+  },
+  {
+    type: "h2",
+    text: "You help me become a knight. I help you become yours. Welcome to the Knight Academy.",
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Every knight needs a place to train. And to get dressed. The Academy is
+        the living research behind{" "}
+        <em>The Dressing Room of a Female Knight</em>: a place to study
+        knighthood, try on armour, swords and banners, and ask what you&rsquo;re
+        willing to stand up for.
       </>
     ),
   },
@@ -1111,17 +1403,108 @@ export const ACADEMY_INTRO: Block[] = [
     type: "p",
     node: (
       <>
-        This isn&rsquo;t a personality quiz. It&rsquo;s a classroom for people who
-        already suspect they weren&rsquo;t made for a small life.
+        It&rsquo;s a school for anyone who suspects they were never made for a
+        small life. For anyone who refused to shrink, but hasn&rsquo;t quite
+        figured out how to take up space on their own terms.
       </>
     ),
   },
-  { type: "target" },
   {
-    type: "statement",
-    text: "Every donation gives you access to a different room in the Knight Academy.",
+    type: "p",
+    node: (
+      <>
+        An academy for becoming the heroine of your own unfinished story. Study
+        the women who went into battle before you. Explore the seven doorways of
+        knighthood. Find your look, discover what you&rsquo;re up against, and
+        learn to enter the fight before the fear has gone away.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        It has a classroom, a dressing room, a round table and an open field.
+        Four ways into the world. Four ways of taking part. Step inside.
+      </>
+    ),
+  },
+  { type: "h2", text: "You fund an exhibition. You inherit a quest." },
+  {
+    type: "p",
+    node: (
+      <>
+        I&rsquo;ve realised that what I&rsquo;m finding is too big to keep to
+        myself. I want you to come close. To step in.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Your contribution helps bring this world of art, armour, images and
+        ritual to life. But I didn&rsquo;t build all this for you to stand
+        outside and admire it. I want you inside the room. I want you trying on
+        the armour, choosing your colours, finding your banner and deciding what
+        you&rsquo;re ready to fight for. The stage is yours, too.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Because knighthood isn&rsquo;t about being untouchable. It&rsquo;s about
+        deciding what matters enough to stand up for. What you&rsquo;re willing
+        to risk. What you&rsquo;ll carry into battle, even when the battle is
+        yours alone.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: (
+      <>
+        Every donation opens a room in the Knight Academy. Teachings. A private
+        session. A seat at the table. A reward built just for you.
+      </>
+    ),
+  },
+  { type: "p", node: <strong>Every door you open, you keep.</strong> },
+  {
+    type: "p",
+    node: (
+      <>
+        You&rsquo;re taking a risk on me. So I&rsquo;m giving back everything
+        I&rsquo;ve found. And more. Because it means the world to me to receive
+        your support. I can&rsquo;t wait to give you a sword. A banner. A crown.
+        In return.
+      </>
+    ),
+  },
+  {
+    type: "p",
+    node: <>I&rsquo;m building this world. And I want you to step in.</>,
+  },
+  { type: "signature", text: "🖤 Niki" },
+  {
+    type: "h2",
+    text: "Every donation opens a different room. Choose where you belong.",
   },
 ];
+
+export const ACADEMY_DOORWAYS = {
+  title: "The female knight’s blueprint",
+  lead: "The hidden wiring. The quiet rhythm. The soul code beneath the surface. I discovered a blueprint for female knighthood: seven doorways drawn from the lives, stories and experiences of extraordinary women.",
+};
+
+export const ACADEMY_KNIGHTS = {
+  title:
+    "Imagine the most extraordinary women in history were your teachers. What might you become?",
+  lead: "Joan of Arc teaching conviction. Lady Gaga teaching reinvention. Vivienne Westwood teaching rebellion. Jane Goodall teaching devotion. Pippi Longstocking teaching you how to live without asking the grown-ups for permission.",
+  button: { label: "Choose where you belong", href: "/rewards" },
+};
 
 /* ───────────────────────── REWARDS INDEX ───────────────────────── */
 export const REWARDS_INTRO = {
@@ -1146,12 +1529,12 @@ export const BUDGET = [
   {
     label: "Venue & install at KOIK",
     pct: 15,
-    note: "Mexico City, opening 5 December 2026",
+    note: "Mexico City, opening 6 March 2027",
   },
   {
     label: "Travel to the Netherlands",
     pct: 10,
-    note: "Bringing the show to a second room, spring 2027",
+    note: "Bringing the show to a second room",
   },
 ];
 

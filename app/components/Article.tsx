@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import Target from "./Target";
 import Expandable from "./Expandable";
@@ -133,6 +134,14 @@ function renderBlock(b: Block, key: string | number) {
         <Expandable label={b.label} key={key}>
           {b.blocks.map((inner, j) => renderBlock(inner, `${key}-${j}`))}
         </Expandable>
+      );
+    case "more":
+      return (
+        <Reveal className="home-more" key={key}>
+          <Link href={b.href} className="tier-link">
+            {b.label} →
+          </Link>
+        </Reveal>
       );
     case "signature":
       return (

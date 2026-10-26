@@ -120,7 +120,7 @@ export default function DianaMenu() {
                   ? "All rewards"
                   : it.label === "blanc"
                     ? "Blanc — name your own amount"
-                    : `Donate €${it.label} or more`
+                    : `Donate ${it.label} or more`
               }
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered((h) => (h === i ? null : h))}

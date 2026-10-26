@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CAMPAIGN, NAV_LINKS, LOGO } from "../content";
+import { CAMPAIGN, NAV_LINKS } from "../content";
 
 export default function SiteFooter() {
   const pathname = usePathname();
@@ -12,8 +12,6 @@ export default function SiteFooter() {
   return (
     <footer id="contact" className="contact">
       <div className="container">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="footer-logo" src={LOGO} alt={CAMPAIGN.studio} />
         <p className="eyebrow">
           Opening {CAMPAIGN.opens} · {CAMPAIGN.venue}
         </p>

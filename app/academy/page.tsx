@@ -3,14 +3,20 @@ import Reveal from "../components/Reveal";
 import Target from "../components/Target";
 import Article from "../components/Article";
 import KnightCatalogue from "../components/KnightCatalogue";
-import { ACADEMY_INTRO, REWARDS, SEVEN_DOORWAYS } from "../content";
+import {
+  ACADEMY_INTRO,
+  ACADEMY_DOORWAYS,
+  ACADEMY_KNIGHTS,
+  REWARDS,
+  SEVEN_DOORWAYS,
+} from "../content";
 
 export const metadata = { title: "Knight Academy" };
 
 export default function AcademyPage() {
   return (
     <main>
-      <Article blocks={ACADEMY_INTRO} />
+      <Article blocks={ACADEMY_INTRO} editorial />
 
       {/* One circle per room — all four, including the Open Field. */}
       <section className="container academy-rooms">
@@ -34,14 +40,13 @@ export default function AcademyPage() {
         ))}
       </section>
 
-      <section className="container academy-doorways">
+      {/* The doorways sit on the reading column, open to the right. */}
+      <section className="container editorial academy-doorways">
         <Reveal as="h2" className="section-title">
-          The seven doorways of female knighthood
+          {ACADEMY_DOORWAYS.title}
         </Reveal>
         <Reveal as="p" className="article-lead">
-          Seven doorways, borrowed from lives that were anything but small, that
-          turn out to fit almost anyone&rsquo;s. This is the model the classroom
-          is built on.
+          {ACADEMY_DOORWAYS.lead}
         </Reveal>
         <ol className="doorways">
           {SEVEN_DOORWAYS.map((d, i) => (
@@ -57,13 +62,15 @@ export default function AcademyPage() {
       </section>
 
       <div className="container">
-        <KnightCatalogue lead="I study epic women — real and fictional, past and present — and ask what's underneath the myth. Every teaching, you choose one." />
+        <KnightCatalogue title={ACADEMY_KNIGHTS.title} lead={ACADEMY_KNIGHTS.lead} />
       </div>
 
-      <div className="container article-cta">
-        <Link href="/rewards" className="btn btn-dark btn-lg">
-          Choose your room
-        </Link>
+      <div className="container editorial">
+        <div className="article-cta">
+          <Link href={ACADEMY_KNIGHTS.button.href} className="btn btn-dark btn-lg">
+            {ACADEMY_KNIGHTS.button.label}
+          </Link>
+        </div>
       </div>
     </main>
   );
