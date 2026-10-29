@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Reveal from "../../components/Reveal";
@@ -6,6 +7,21 @@ import RewardIntake from "./RewardIntake";
 import HeroVideo from "../../components/HeroVideo";
 import KnightCatalogue from "../../components/KnightCatalogue";
 import { REWARDS, rewardBySlug } from "../../content";
+
+/** Copy uses "\n" for a line break inside a paragraph. */
+function Lines({ text }: { text: string }) {
+  const parts = text.split("\n");
+  return (
+    <>
+      {parts.map((part, i) => (
+        <Fragment key={i}>
+          {i > 0 && <br />}
+          {part}
+        </Fragment>
+      ))}
+    </>
+  );
+}
 
 export function generateStaticParams() {
   return REWARDS.map((r) => ({ slug: r.slug }));
@@ -59,7 +75,7 @@ export default async function RewardDetailPage({
               {reward.price}
             </Reveal>
             <Reveal as="p" className="reward-hero-thanks" delay={90}>
-              {d.thanks}
+              <Lines text={d.thanks} />
             </Reveal>
           </div>
         </div>
@@ -77,6 +93,11 @@ export default async function RewardDetailPage({
         <Reveal as="p" className="article-lead">
           {d.lead}
         </Reveal>
+        {d.intro?.map((p) => (
+          <Reveal as="p" className="article-p" key={p}>
+            <Lines text={p} />
+          </Reveal>
+        ))}
 
         <Reveal className="article-figure">
           {d.video ? (
@@ -104,15 +125,9 @@ export default async function RewardDetailPage({
         </Reveal>
         {d.reframe.paras.map((p) => (
           <Reveal as="p" className="article-p" key={p}>
-            {p}
+            <Lines text={p} />
           </Reveal>
         ))}
-
-        <div className="target-divider" aria-hidden="true">
-          <div className="target-badge">
-            <Target rings={3} size={44} filledCenter strokeRatio={0.55} />
-          </div>
-        </div>
 
         {/* ---------- This is for you if… ---------- */}
         <Reveal as="h2" className="article-h2">
@@ -128,15 +143,36 @@ export default async function RewardDetailPage({
         <Reveal as="h2" className="article-h2">
           {d.story.title}
         </Reveal>
-        {d.story.quote && (
+        {d.story.quote && !d.story.quoteAfter && (
           <Reveal as="blockquote" className="article-quote">
             <span>{d.story.quote}</span>
           </Reveal>
         )}
         {d.story.paras.map((p) => (
           <Reveal as="p" className="article-p" key={p}>
-            {p}
+            <Lines text={p} />
           </Reveal>
+        ))}
+        {d.story.quote && d.story.quoteAfter && (
+          <Reveal as="blockquote" className="article-quote">
+            <span>{d.story.quote}</span>
+          </Reveal>
+        )}
+
+        {/* ---------- Further passages (Round Table) ---------- */}
+        {d.sections?.map((sec, i) => (
+          <Fragment key={i}>
+            {sec.title && (
+              <Reveal as="h3" className="reward-subhead">
+                {sec.title}
+              </Reveal>
+            )}
+            {sec.paras.map((p, j) => (
+              <Reveal as="p" className="article-p" key={j}>
+                {typeof p === "string" ? <Lines text={p} /> : p}
+              </Reveal>
+            ))}
+          </Fragment>
         ))}
 
         {/* ---------- The seven doorways (Class Room only) ---------- */}
@@ -218,6 +254,11 @@ export default async function RewardDetailPage({
             </li>
           ))}
         </Reveal>
+        {d.howItWorksNote && (
+          <Reveal as="p" className="article-p howitworks-note">
+            {d.howItWorksNote}
+          </Reveal>
+        )}
 
         {/* ---------- The investment ---------- */}
         <Reveal className="investment">
@@ -234,13 +275,18 @@ export default async function RewardDetailPage({
           </Link>
         </Reveal>
 
-        {/* ---------- Proof ---------- */}
-        <Reveal as="h2" className="article-h2">
-          Proof
-        </Reveal>
-        <Reveal className="proof-pending">
-          <p>{d.proof.pending}</p>
-        </Reveal>
+        {/* ---------- Proof (only once there is a real quote) ---------- */}
+        {d.proof && (
+          <>
+            <Reveal as="h2" className="article-h2">
+              Proof
+            </Reveal>
+            <Reveal as="blockquote" className="article-quote">
+              <span>&ldquo;{d.proof.quote}&rdquo;</span>
+              <cite>{d.proof.cite}</cite>
+            </Reveal>
+          </>
+        )}
 
         {/* ---------- Close ---------- */}
         {d.close.lines.map((l) => (

@@ -75,6 +75,7 @@ export const NAV_LINKS = [
 
 export type IncludedGroup = { group: string; items: string[] };
 
+/* In reward copy, "\n" inside a string is a line break within the paragraph. */
 export type RewardDetail = {
   /** The thank-you line that sits directly under the reward name. */
   thanks: string;
@@ -83,16 +84,22 @@ export type RewardDetail = {
   video?: { src: string; poster: string; portrait?: boolean };
   statement: string;
   lead: string;
+  /** Paragraphs that follow the lead, before the picture. */
+  intro?: string[];
   reframe: { title: string; paras: string[] };
   forYouIf: { title: string; items: string[] };
-  story: { title: string; quote?: string; paras: string[] };
+  /** `quoteAfter` puts the quote under the story instead of above it. */
+  story: { title: string; quote?: string; quoteAfter?: boolean; paras: string[] };
+  /** Extra passages after the story; a title is optional. */
+  sections?: { title?: string; paras: ReactNode[] }[];
   doorways?: { name: string; body: string }[];
   walkAway?: { title: string; paras: string[] };
   included: { title: string; intro?: string; groups: IncludedGroup[] };
   howItWorks: string[];
+  howItWorksNote?: string;
   investment: { title: string; line: string; note?: string };
-  /** Testimonials are still missing — Niki flagged all three in the briefing. */
-  proof: { pending: string };
+  /** The section only shows once there is a real quote. */
+  proof?: { quote: string; cite: string };
   close: { lines: string[]; cta: string };
 };
 
@@ -191,7 +198,7 @@ export const KNIGHTS = [
 const FROM_CLASSROOM: IncludedGroup = {
   group: "From The Class Room",
   items: [
-    "8 Knight Teachings, starting September — 1 live in the Netherlands, 1 live in Mexico City, 6 online",
+    "8 Knight Teachings: live in the Netherlands, live in Mexico City and online",
     "Founding Member status in the Knight Academy",
     "Access to the classroom Telegram",
     "Permission to bring someone",
@@ -201,17 +208,20 @@ const FROM_CLASSROOM: IncludedGroup = {
 const FROM_DRESSING_ROOM: IncludedGroup = {
   group: "From The Dressing Room",
   items: [
-    "One 90-minute 1:1 Knight Discovery Session — online or in person",
-    "A personalised wrap-up of what surfaced — yours to keep",
+    "One 90-minute 1:1 Knight Discovery Session, online or in person",
+    "A personal wrap-up of what surfaced, yours to keep",
   ],
 };
 
+const ROUND_TABLE_ITEMS = [
+  "One seat at a Round Table: Mexico City or the Netherlands",
+  "Dinner, ritual and your knighting",
+  "Your relic, your vow and your secret mission",
+];
+
 const FROM_ROUND_TABLE: IncludedGroup = {
   group: "From The Round Table",
-  items: [
-    "One seat at a Round Table — Mexico City or the Netherlands",
-    "Artistic proof from the evening",
-  ],
+  items: ROUND_TABLE_ITEMS,
 };
 
 export const SEVEN_DOORWAYS = [
@@ -264,12 +274,16 @@ export const REWARDS: Reward[] = [
     cta: "Join as a founding member",
     detail: {
       thanks:
-        "As a BIG thank you for your donation I call you a Founding Member of the Knight Academy and give unlimited access to the CLASS ROOM in which I teach my most profound knight teachings.",
+        "As a BIG thank you for your generosity, I’m opening the doors to my most profound teachings on knighthood. Consider this your invitation to gather, to learn, to question, to declare what you believe in and to witness what becomes possible when we dare to take one another seriously.",
       image: IMG.classroom,
       statement: "Some of us were never made for a small life.",
-      lead: "The Knight Academy is a 12-week live classroom in female knighthood — for people who already suspect that about themselves.",
+      lead: "A classroom in female knighthood. A place to study courage, devotion, conviction and the particular kind of power.",
+      intro: [
+        "For the curious.\nFor the students.\nFor the ones who feel the call.\nFor the future knights.",
+        "Every revolution has its first believers. You are one of ours.",
+      ],
       reframe: {
-        title: "The reframe",
+        title: "Imagine the most extraordinary women in history were your teachers",
         paras: [
           "All year, one question followed me everywhere: what if we actually studied the women who lived epic lives — and learned from them?",
           "In this room I hand over the most outstanding, mind-blowing things I've found about female knighthood — after a year of full-blown obsession. Inspired. Activated. Nothing about me is the same since.",
@@ -325,12 +339,13 @@ export const REWARDS: Reward[] = [
       ],
       investment: {
         title: "The investment",
-        line: "€50 or more.",
+        line: "€50,- or more.",
         note: "One time, or monthly.",
       },
       proof: {
-        pending:
-          "A short quote from a guest at the original birthday round table goes here — real and attributable, once it lands.",
+        quote:
+          "The female knight night. So inspiring! Creative soul. Happy birthday big sister.",
+        cite: "Ana Corredoyra",
       },
       close: {
         lines: [
@@ -365,7 +380,7 @@ export const REWARDS: Reward[] = [
       statement: "Some call it personal branding. I call it meeting your knight.",
       lead: "One clear mirror. One sharp blade. One honest guide. Ninety minutes, and you don't unsee her again.",
       reframe: {
-        title: "The reframe",
+        title: "The dressing room is where we rehearse the future.",
         paras: [
           "Not a personality test. Not a vision board.",
           "Ninety minutes where I read you the way I read a blueprint — fast, precise, uncomfortably accurate. What comes out isn't advice. It's the knight already standing in you, just no longer invisible to yourself.",
@@ -411,7 +426,7 @@ export const REWARDS: Reward[] = [
             items: [
               "One 90-minute 1:1 Knight Discovery Session — online or in person",
               "A short questionnaire beforehand, so we start already warm",
-              "A personalised wrap-up of what surfaced — yours to keep",
+              "A personal wrap-up of what surfaced, yours to keep",
             ],
           },
         ],
@@ -425,11 +440,7 @@ export const REWARDS: Reward[] = [
       ],
       investment: {
         title: "The investment",
-        line: "€250 or more.",
-      },
-      proof: {
-        pending:
-          "A short quote from a past 1:1 client goes here — ideally one where the wrap-up led somewhere concrete: a campaign, a shoot, a decision made.",
+        line: "€250,- or more.",
       },
       close: {
         lines: ["Once you see your knight, you don't unsee her."],
@@ -455,73 +466,112 @@ export const REWARDS: Reward[] = [
     cta: "Reserve your seat",
     detail: {
       thanks:
-        "As a BIG thank you for your donation I call you a Founding Member of the Knight Academy, and I keep a seat for you at the table where knighthood gets handed over out loud.",
+        "As a thank you for your generosity, I reserve a seat for you at the Round Table, where we gather to share our boldest ambitions, witness one another’s becoming and pass on the art of knighthood out loud.\nYour seat is waiting.",
       image: IMG.table,
       statement: "Once a season, we gather.",
-      lead: "A round table. A ritual. No hierarchy, no one performing as the expert — just knights, building power together instead of alone.",
+      lead: "Once a season, a table is set for giants.",
+      intro: [
+        "Not the famous, the fearless or the particularly tall. A giant is anyone willing to take up the space their life requires. Some arrive with a vision fully formed. Others arrive with a thought they’ve never dared to say out loud.",
+        "Over one night, you are fed, challenged and knighted in front of witnesses. Then you’re sent back into your life with a mission.",
+      ],
       reframe: {
-        title: "The reframe",
+        title: "Not a dinner you attend. A night you enter.",
         paras: [
-          "Not a networking dinner. Not a talk about becoming.",
-          "A table where power actually rises — where archetypes get bodies and creation happens on the spot, in front of you, with you, because of you.",
-          "You don't leave having heard about transformation. You leave transformed.",
+          "There is a life that looks perfectly respectable from the outside.\nAnd then there is the life that keeps knocking from within. The one with the outrageous ambition, the inconvenient desire, the impossible idea. The version of you that refuses to become smaller just because the room was built that way.",
+          "We made this evening for that version of you.",
+          "Each gathering is a living artwork. A secret ceremony where the sacred meets the ridiculous, beauty flirts with the grotesque, and every guest is both the artist and the masterpiece. Expect baroque excess, punk royalty, mythological glamour and a touch of beautiful absurdity. Impossible flowers, strange rituals, unexpected confessions, and a feast fit for the people who intend to rewrite the story.",
+          "We gather around a table that has no head, because nobody here has come to kneel. Power may wear pearls, armour, silk, sequins, or nothing you can name.",
+          "You have spent enough time being palatable. For one night, let the room adjust to you.",
+          "No shrinking. No false modesty. No pretending not to want what you want.",
         ],
       },
       forYouIf: {
         title: "This is for you if…",
         items: [
-          "You want to be part of something crazy powerful, not just hear about it after",
-          "You're ready to sit at a table with no hierarchy and no expert performing at the head of it",
-          "You want witnesses to a threshold you're crossing, not just notes about it",
-          "You're drawn to ritual that isn't a metaphor",
-          "You already know which table you'd choose, Mexico City or the Netherlands, before you finish reading this",
+          "Ordinary life occasionally feels like a set designed by someone with no sense of colour",
+          "You want your life to become a work of art",
+          "You have an ambition that sounds outrageous when you say it out loud",
+          "You want to leave dinner with a fire under your arse",
+          "You want to be witnessed in your becoming, not just applauded once you’ve arrived",
+          "You want to surround yourself with people who make your world feel bigger, stranger and more alive",
         ],
       },
       story: {
         title: "The story",
         quote:
-          "What's made in that room stays real after the table is cleared. You don't leave with notes. You leave with witnesses, and with artistic proof.",
+          "Before the night ends, the table writes its cheer together: a battle cry, a toast and a sermon, spoken once, by everyone.",
+        quoteAfter: true,
         paras: [
-          "We eat. We drink. We talk about knighthood — legacy, calling, banners, conviction, ritual, the sword. Not to network. Not to perform.",
-          "Each Night is an artistic initiation into knighthood. Two nights. Two countries. Two kinds of power.",
-          "Mexico City — 5 March. The night before the exhibition opens. A secret table. A closed door. This is the night you are dubbed — the old way. A hand, a blade, a shoulder, a title given out loud, in front of witnesses who will remember it happened. You arrive at the table one thing. You leave it another. The next morning, the doors of the exhibition open. You'll already be a knight when you walk through them.",
-          "The Netherlands. A table joined by a woman who is, officially, a knight — geridderd, sword and all, no metaphor required. She sits across from the version of knighthood we're building for ourselves, and answers, honestly, what it costs and what it carries.",
-          "You no longer have to be a solo knight. You just have to show up to the table.",
+          "I’ve always dreamed of being surrounded by extraordinary people. Giants of all sizes. People fully willing not to stay small. The kind of company that leaves you inspired, connected, and a little braver than when you arrived.",
+          "So I decided to create the night of my dreams. An evening of impeccable ceremony, devoted to the dangerous art of not behaving. A secret gathering where we are knighted, fed, challenged and bound to a mission that sends us back into the world differently.",
+          "A place where extraordinary becomes contagious.",
+          "You helped bring this world into being. And I want you inside it.",
         ],
       },
+      sections: [
+        {
+          paras: [
+            "Here, ambition doesn’t need to be disguised as modesty. We speak the things we’ve been taught to whisper, celebrate the selves we’ve been taught to edit, and make room for the person we haven’t yet dared to become.",
+          ],
+        },
+        {
+          title: "Your first night as a knight",
+          paras: [
+            <>
+              Somewhere between the feast and midnight, a bell rings and the
+              room falls silent. One question is put to you:{" "}
+              <em>
+                what are you willing to stand for, even if it costs you
+                something?
+              </em>{" "}
+              You can answer it out loud or keep it to yourself. Then you step
+              forward, and the blade touches your shoulders, in front of
+              everyone at the table.
+            </>,
+          ],
+        },
+        {
+          title: "Then you leave carrying a mission.",
+          paras: [
+            "A secret assignment. A piece of the night that belongs to you, and now asks something of you. You take it home with your vow, a relic of the night, and an ally who heard you say it and will hold you to it. Next season, the table is set again. You come back and tell us what happened.",
+          ],
+        },
+        {
+          title: "The first two tables",
+          paras: [
+            <>
+              <strong>Mexico City · 5 March.</strong> The night before the
+              exhibition opens, behind a closed door. The next morning, you walk
+              into the exhibition already a knight.
+            </>,
+            <>
+              <strong>The Netherlands · TBA.</strong> Joined by someone who was
+              officially knighted, sword and all.
+            </>,
+          ],
+        },
+      ],
       included: {
         title: "What's included",
-        intro:
-          "The Round Table sits on top of both rooms before it — you arrive with all of it, not just a seat.",
         groups: [
           FROM_CLASSROOM,
           FROM_DRESSING_ROOM,
-          {
-            group: "Plus, The Round Table itself",
-            items: [
-              "One seat at a Round Table — Mexico City or the Netherlands, your choice",
-              "Artistic proof from the evening",
-            ],
-          },
+          { group: "Plus, The Round Table", items: ROUND_TABLE_ITEMS },
         ],
       },
       howItWorks: [
         "Donate",
-        "Reserve your seat",
-        "Choose Mexico City or the Netherlands",
-        "Show up",
+        "Choose your table",
+        "Receive your sealed invitation",
+        "Take your seat",
       ],
+      howItWorksNote: "Seats per table are limited. Travel is not included.",
       investment: {
         title: "The investment",
-        line: "€750 or more.",
-        note: "Seats are limited. After your gift, you'll receive a short form to reserve your place.",
-      },
-      proof: {
-        pending:
-          "An account from a guest at the original birthday round table goes here — the closest thing to a precedent this room already has.",
+        line: "€750,- or more.",
       },
       close: {
-        lines: ["You arrive at the table one thing. You leave it another."],
+        lines: ["The world can keep its rules.", "We have a table to return to."],
         cta: "Join the knights table",
       },
     },
@@ -550,7 +600,7 @@ export const REWARDS: Reward[] = [
       statement: "I dare you to trust me.",
       lead: "No number required. Just the confidence to hand me one, and see what I hand back.",
       reframe: {
-        title: "The reframe",
+        title: "A reward I haven’t invented yet",
         paras: [
           "Not a donation. A dare.",
           "Write the cheque. I match it — not in euros, but in imagination. Whatever you put in, I hand back something built only for you, and just as magnificent.",
@@ -606,7 +656,9 @@ export const REWARDS: Reward[] = [
         note: "Leave the amount empty and I'll treat it as the blank cheque.",
       },
       proof: {
-        pending: "A quote from Nino Schöningh goes here, once the wording is agreed.",
+        quote:
+          "Niki is a nutcracker. Give her a coconut-sized challenge and she will crack it with precision. Open it up, and turn what’s inside into something unexpectedly brilliant.",
+        cite: "Nino Schöningh, CEO Toffey",
       },
       close: {
         lines: [

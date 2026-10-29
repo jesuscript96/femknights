@@ -2354,20 +2354,6 @@ body[data-menu="open"] .diana {
   margin-top: 12px;
 }
 
-.proof-pending {
-  border: 1px dashed var(--line);
-  border-radius: 16px;
-  padding: clamp(18px, 2.4vw, 26px);
-  background: var(--card);
-}
-
-.proof-pending p {
-  margin: 0;
-  font-size: 15.5px;
-  line-height: 1.55;
-  color: var(--muted);
-}
-
 .other-rooms {
   padding-block: clamp(50px, 8vw, 110px);
   border-top: 1px solid var(--line);
@@ -2868,5 +2854,19 @@ textarea:focus-visible,
 }
 .editorial.academy-doorways > .doorways {
   width: calc(100cqi - var(--col-start));
+}
+
+/* Reward pages: titled passages after the story, and the seats note. */
+.reward-subhead {
+  margin: clamp(30px, 4vw, 44px) 0 0;
+  font-size: clamp(19px, 1.9vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.018em;
+}
+.reward-subhead + .article-p {
+  margin-top: 10px;
+}
+.howitworks-note {
+  color: var(--muted);
 }
 

@@ -33,8 +33,9 @@ export default function RewardIntake({
   const numOk = Number.isFinite(num) && num >= reward.min;
   const valid = reward.allowBlank ? blank || numOk : numOk;
 
+  // The Open Field shows no suggested amounts: the number is the dare.
   const presets = reward.allowBlank
-    ? [50, 250, 750]
+    ? []
     : [reward.min, reward.min * 2, reward.min * 5];
 
   const submit = (e: React.FormEvent) => {
