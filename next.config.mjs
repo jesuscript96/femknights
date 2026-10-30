@@ -21,7 +21,6 @@ const nextConfig = {
       },
       { source: "/donate/reward", destination: "/donate", permanent: false },
       { source: "/donate/payment", destination: "/donate", permanent: false },
-      { source: "/donate/pay", destination: "/donate", permanent: false },
     ];
   },
 };

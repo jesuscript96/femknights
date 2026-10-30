@@ -23,12 +23,17 @@ export const CAMPAIGN = {
 
 /**
  * Donorbox handles the payment only; the site keeps the choice (room, amount,
- * message). Leave `campaign` empty and "Start payment" stays simulated. Fill in
- * the slug from donorbox.org/<slug> and it hands off to Donorbox, with the
- * amount and monthly/once already set.
+ * message). Leave `campaign` empty and the payment step stays simulated. Fill
+ * in the slug from donorbox.org/<slug> and the payment step embeds the
+ * Donorbox form, with amount, monthly/once and name already filled in.
+ *
+ * In the Donorbox campaign editor, set "Redirect after donation" to
+ * https://<site>/donate/complete so donors land on our thank-you page.
+ * `language` only applies when the campaign language is "Auto-detect".
  */
 export const DONORBOX = {
-  campaign: "",
+  campaign: "the-dressing-room-of-a-female-knight",
+  language: "en",
 };
 
 /** Poetic slogans from the story (used on the rewards + academy pages). */

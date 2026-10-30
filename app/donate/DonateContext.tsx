@@ -23,6 +23,8 @@ export type DonateState = {
 };
 
 type DonateCtx = DonateState & {
+  /** False until sessionStorage has been read; guards redirects on reload. */
+  hydrated: boolean;
   set: (patch: Partial<DonateState>) => void;
   reset: () => void;
 };
@@ -42,6 +44,7 @@ const KEY = "knight-donate";
 
 export function DonateProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<DonateState>(DEFAULT);
+  const [hydrated, setHydrated] = useState(false);
 
   // Rehydrate from sessionStorage so a refresh mid-flow keeps the choice.
   useEffect(() => {
@@ -51,23 +54,26 @@ export function DonateProvider({ children }: { children: React.ReactNode }) {
     } catch {
       /* ignore */
     }
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     try {
       sessionStorage.setItem(KEY, JSON.stringify(state));
     } catch {
       /* ignore */
     }
-  }, [state]);
+  }, [state, hydrated]);
 
   const value = useMemo<DonateCtx>(
     () => ({
       ...state,
+      hydrated,
       set: (patch) => setState((s) => ({ ...s, ...patch })),
       reset: () => setState(DEFAULT),
     }),
-    [state]
+    [state, hydrated]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

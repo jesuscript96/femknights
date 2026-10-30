@@ -1,34 +1,63 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Target from "../../components/Target";
 import { CAMPAIGN, REWARDS } from "../../content";
 import { useDonate } from "../DonateContext";
 
-export default function CompleteStep() {
-  const { tierId, amount, blankCheque, name, frequency, message, reset } =
-    useDonate();
-  const reward = REWARDS.find((r) => r.id === tierId) ?? null;
+type Snapshot = {
+  name: string;
+  amount: number | null;
+  blankCheque: boolean;
+  frequency: string;
+  message: string;
+  rewardName?: string;
+  rings: number;
+  filled: boolean;
+};
 
-  // Snapshot the details, then clear state so a refresh/back is clean.
-  const snap = useRef({
-    name,
-    amount,
-    blankCheque,
-    frequency,
-    message,
-    rewardName: reward?.name,
-    rings: reward?.rings ?? 3,
-    filled: reward?.filledCenter ?? true,
-  });
+export default function CompleteStep() {
+  const donate = useDonate();
+  const [snap, setSnap] = useState<Snapshot | null>(null);
 
   useEffect(() => {
+    // Donorbox's "redirect after donation" can open this page inside its own
+    // embedded iframe; lift it out to the full window.
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = window.location.href;
+    }
+  }, []);
+
+  // Once the choice is read back from sessionStorage, snapshot the details,
+  // then clear state so a refresh/back is clean. Donorbox's redirect may also
+  // pass first_name / amount, used when the session is gone.
+  useEffect(() => {
+    if (!donate.hydrated || snap) return;
+    const q = new URLSearchParams(window.location.search);
+    const reward = REWARDS.find((r) => r.id === donate.tierId) ?? null;
+    const qAmount = Number(q.get("amount"));
+    setSnap({
+      name: donate.name || q.get("first_name") || "",
+      amount: donate.amount ?? (qAmount > 0 ? qAmount : null),
+      blankCheque: donate.blankCheque,
+      frequency: donate.frequency,
+      message: donate.message,
+      rewardName: reward?.name,
+      rings: reward?.rings ?? 3,
+      filled: reward?.filledCenter ?? true,
+    });
+  }, [donate, snap]);
+
+  const { reset } = donate;
+  useEffect(() => {
+    if (!snap) return;
     const t = window.setTimeout(reset, 400);
     return () => window.clearTimeout(t);
-  }, [reset]);
+  }, [snap, reset]);
 
-  const s = snap.current;
+  if (!snap) return null;
+  const s = snap;
 
   const gift = s.blankCheque
     ? "Blank cheque"

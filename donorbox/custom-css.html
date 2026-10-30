@@ -1,0 +1,143 @@
+<style>
+  /*
+    Studio Niki branding for the embedded Donorbox form.
+
+    The form lives in an iframe on donorbox.org, so the site cannot style it.
+    Paste this whole file, style tags included, into:
+    Donorbox -> Campaigns -> Edit Campaign -> Custom CSS -> Update.
+
+    Needs Donorbox Pro/Premium: the free plan has no Custom CSS box (checked
+    30 Oct 2026). On the free plan the campaign already uses #ff4115 for the
+    primary and button colour, with round corners.
+
+    Written against the classic Donorbox form. If the campaign uses the newer
+    OmniGive form, the class names differ and this needs redoing.
+  */
+
+  /* Palette: same tokens as app/globals.css */
+  :root {
+    --nk-bg: #f2e9d7;
+    --nk-card: #fbf6ea;
+    --nk-fg: #171310;
+    --nk-muted: #8a7c66;
+    --nk-accent: #ff4115;
+    --nk-accent-dark: #d62f08;
+    --nk-line: rgba(23, 19, 16, 0.16);
+  }
+
+  body,
+  .donation-widget,
+  .donation-widget *:not(.material-icons):not([class*="icon"]) {
+    font-family: "Helvetica Neue", Helvetica, Inter, Arial, sans-serif !important;
+  }
+
+  /* The card */
+  .donation-widget {
+    border: none !important;
+    border-radius: 24px !important;
+    overflow: hidden;
+    background: var(--nk-card) !important;
+    color: var(--nk-fg) !important;
+  }
+  .tabs-content,
+  .tabs-footer,
+  .donation-widget footer {
+    background: var(--nk-card) !important;
+  }
+
+  /* Header strip: ink instead of a flat brand colour */
+  .tabs-header,
+  .tabs-header.basic-color-background {
+    background: var(--nk-fg) !important;
+    color: var(--nk-card) !important;
+  }
+
+  /* One time / monthly: pill toggle */
+  .plan_duration {
+    color: var(--nk-fg) !important;
+    border: 2px solid var(--nk-line) !important;
+    background: transparent !important;
+    font-weight: 700 !important;
+    border-radius: 0 !important;
+  }
+  .plan_duration:first-of-type {
+    border-radius: 999px 0 0 999px !important;
+  }
+  .plan_duration:last-of-type {
+    border-radius: 0 999px 999px 0 !important;
+    border-right: 2px solid var(--nk-line) !important;
+  }
+  .pd_radio:checked + label,
+  .pd_radio:checked + .plan_duration {
+    background: var(--nk-accent) !important;
+    border-color: var(--nk-accent) !important;
+    color: #fff !important;
+  }
+
+  /* Amount options */
+  .suggested-amounts .mdl-radio,
+  .amount-item .mdl-radio {
+    border: 2px solid var(--nk-line) !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+  }
+  .suggested-amounts .mdl-radio.is-checked,
+  .amount-item .mdl-radio.is-checked {
+    border-color: var(--nk-accent) !important;
+  }
+  .mdl-radio__label,
+  .donation-widget .amount,
+  .donation-widget input {
+    color: var(--nk-fg) !important;
+  }
+  .mdl-radio__outer-circle,
+  .mdl-radio.is-checked .mdl-radio__outer-circle {
+    border-color: var(--nk-accent) !important;
+  }
+  .mdl-radio__inner-circle {
+    background: var(--nk-accent) !important;
+  }
+  .mdl-ripple {
+    background: var(--nk-accent) !important;
+  }
+
+  /* Text fields (details step) */
+  .mdl-textfield__input {
+    border-bottom-color: var(--nk-line) !important;
+  }
+  .mdl-textfield__label:after,
+  .baseline {
+    background-color: var(--nk-accent) !important;
+  }
+  .mdl-textfield--floating-label.is-focused .mdl-textfield__label,
+  .mdl-textfield--floating-label.is-dirty .mdl-textfield__label {
+    color: var(--nk-accent-dark) !important;
+  }
+
+  /* Main button: the site's orange pill */
+  #footer_button,
+  .dw-btn,
+  .donation-widget .basic-color-background.mdl-button {
+    background: var(--nk-accent) !important;
+    color: #fff !important;
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+  }
+  #footer_button:hover,
+  .dw-btn:hover {
+    background: var(--nk-accent-dark) !important;
+  }
+
+  /* Links and small print */
+  .donation-widget a {
+    color: var(--nk-accent-dark) !important;
+  }
+  .donation-widget .hint,
+  .donation-widget .desc,
+  .recurring.msg {
+    color: var(--nk-muted) !important;
+  }
+</style>

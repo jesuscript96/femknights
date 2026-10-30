@@ -5,13 +5,15 @@ import { usePathname } from "next/navigation";
 const STEPS = [
   { href: "/donate", label: "Choose your room" },
   { href: "/donate/thank-you", label: "Your message" },
-  { href: "/donate/complete", label: "Payment" },
+  { href: "/donate/pay", label: "Payment" },
 ];
 
 export default function StepBar() {
   const pathname = usePathname();
   const found = STEPS.findIndex((s) => s.href === pathname);
-  const current = found < 0 ? 0 : found;
+  // The thank-you page after payment shows every step as done.
+  const current =
+    pathname === "/donate/complete" ? STEPS.length : found < 0 ? 0 : found;
 
   return (
     <ol className="stepbar container" aria-label="Donation progress">

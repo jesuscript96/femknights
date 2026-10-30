@@ -1,23 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Target from "../../components/Target";
-import { CAMPAIGN, DONORBOX, REWARDS } from "../../content";
+import { CAMPAIGN, REWARDS } from "../../content";
 import { useDonate } from "../DonateContext";
 
 export default function ThankYouStep() {
-  const { tierId, amount, blankCheque, frequency, name, message, set } =
+  const { hydrated, tierId, amount, blankCheque, frequency, name, message, set } =
     useDonate();
   const router = useRouter();
   const reward = REWARDS.find((r) => r.id === tierId) ?? null;
-  const [starting, setStarting] = useState(false);
 
   // Landed here without picking a room — send them back to choose one.
   useEffect(() => {
-    if (!tierId) router.replace("/donate");
-  }, [tierId, router]);
+    if (hydrated && !tierId) router.replace("/donate");
+  }, [hydrated, tierId, router]);
 
   if (!reward) return null;
 
@@ -26,22 +25,6 @@ export default function ThankYouStep() {
   const gift = blankCheque
     ? "Blank cheque"
     : `€${amount}${frequency === "monthly" ? ` / month · ${CAMPAIGN.monthlyMonths} months` : ""}`;
-
-  const startPayment = () => {
-    setStarting(true);
-    if (DONORBOX.campaign) {
-      // Hand off to Donorbox with the gift already filled in; Donorbox's own
-      // "after donation" redirect brings the donor back to /donate/complete.
-      const params = new URLSearchParams({
-        default_interval: frequency === "monthly" ? "m" : "o",
-      });
-      if (!blankCheque && amount) params.set("amount", String(amount));
-      window.location.href = `https://donorbox.org/${DONORBOX.campaign}?${params}`;
-      return;
-    }
-    // Not connected yet: simulate the hand-off.
-    window.setTimeout(() => router.push("/donate/complete"), 1600);
-  };
 
   return (
     <section className="step">
@@ -99,32 +82,17 @@ export default function ThankYouStep() {
         </label>
       </div>
 
-      {!DONORBOX.campaign && (
-        <p className="demo-note">
-          Prototype — starting the payment is simulated here. This is where the
-          hand-off to the payment platform will go.
-        </p>
-      )}
-
       <div className="step-actions">
         <button
           className="btn btn-primary btn-lg"
-          disabled={!ready || starting}
-          onClick={startPayment}
+          disabled={!ready}
+          onClick={() => router.push("/donate/pay")}
         >
-          {starting ? (
-            <span className="pay-spinner" aria-live="polite">
-              <span className="spinner" /> Starting…
-            </span>
-          ) : (
-            <>Start payment</>
-          )}
+          Continue to payment
         </button>
-        {!starting && (
-          <Link href={`/rewards/${reward.slug}`} className="step-back">
-            ← Back to {reward.name}
-          </Link>
-        )}
+        <Link href={`/rewards/${reward.slug}`} className="step-back">
+          ← Back to {reward.name}
+        </Link>
       </div>
     </section>
   );
